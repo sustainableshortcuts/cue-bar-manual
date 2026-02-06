@@ -1,0 +1,4273 @@
+<!DOCTYPE html>
+<!--
+  CUE BAR EMPLOYEE MANUAL 2026
+  
+  ✅ 100% OFFLINE CAPABLE
+  - All features work without internet
+  - No external dependencies
+  - Uses system fonts for compatibility
+  - localStorage for all data persistence
+  
+  Features:
+  • Work routines & checklists
+  • 12 pets with pixel art
+  • Pet collection & switching
+  • Equippable items (costumes, decorations, backgrounds)
+  • Holiday decorations (seasonal)
+  • Task points system (1-3 points)
+  • Diminishing returns (daily reset)
+  • Snake game (desktop & mobile)
+  • Full iOS & Android support
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    
+    <!-- PWA / Home Screen Settings -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Cue Bar Manual">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0a0a0a">
+    
+    <!-- App Icons -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' fill='%230a0a0a'/><circle cx='90' cy='60' r='25' fill='%2300ff88'/><rect x='65' y='85' width='50' height='70' rx='10' fill='%2300ff88'/><text x='90' y='135' font-size='40' text-anchor='middle' fill='%230a0a0a' font-family='Arial, sans-serif' font-weight='bold'>CUE</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a0a0a'/><circle cx='50' cy='35' r='15' fill='%2300ff88'/><rect x='35' y='50' width='30' height='40' rx='5' fill='%2300ff88'/></svg>">
+    
+    <title>Cue Bar Employee Manual 2026</title>
+    <!-- Fonts - using system fonts for offline compatibility -->
+    <style>
+        /* System font stack for maximum offline compatibility */
+        @font-face {
+            font-family: 'Archivo-Fallback';
+            src: local('Arial'), local('Helvetica'), local('sans-serif');
+            font-weight: 400;
+        }
+        @font-face {
+            font-family: 'Archivo-Fallback';
+            src: local('Arial Bold'), local('Helvetica Bold'), local('sans-serif');
+            font-weight: 600;
+        }
+        @font-face {
+            font-family: 'Archivo-Fallback';
+            src: local('Arial Black'), local('Helvetica Bold'), local('sans-serif');
+            font-weight: 700;
+        }
+        @font-face {
+            font-family: 'SpaceMono-Fallback';
+            src: local('Courier New'), local('Courier'), local('monospace');
+            font-weight: 400;
+        }
+        @font-face {
+            font-family: 'SpaceMono-Fallback';
+            src: local('Courier New Bold'), local('Courier Bold'), local('monospace');
+            font-weight: 700;
+        }
+    </style>
+    <style>
+        :root {
+            --primary: #1a1a1a;
+            --accent: #00ff88;
+            --secondary: #ff3366;
+            --bg: #0a0a0a;
+            --text: #ffffff;
+            --text-dim: #888888;
+            --card-bg: #1a1a1a;
+            --border: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Archivo-Fallback', Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding-top: 55px;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Background Pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 255, 136, 0.03) 2px,
+                    rgba(0, 255, 136, 0.03) 4px
+                );
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, #000 100%);
+            padding: 2rem 2rem 1rem 2rem;
+            border-bottom: 3px solid var(--accent);
+            position: relative;
+            z-index: 98;
+            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 700;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, var(--accent), #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-family: 'SpaceMono-Fallback', 'Courier New', Courier, monospace;
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Fixed Quick Navigation - iOS Compatible */
+        .quick-nav {
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--border);
+            padding: 0.75rem 1rem;
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            overflow-y: hidden;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            z-index: 9999;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+        }
+
+        .quick-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .quick-nav-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .quick-nav-btn:hover,
+        .quick-nav-btn:active {
+            background: var(--accent);
+            color: var(--bg);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .quick-nav-btn.home {
+            background: var(--accent);
+            color: var(--bg);
+            border-color: var(--accent);
+        }
+
+        .quick-nav-btn.home:hover {
+            background: #00ccff;
+        }
+
+        .quick-nav-btn.pet-btn {
+            background: linear-gradient(135deg, #ff6b9d, #c06c84);
+            color: white;
+            border-color: #ff6b9d;
+            font-weight: 700;
+        }
+
+        .quick-nav-btn.pet-btn:hover,
+        .quick-nav-btn.pet-btn:active {
+            background: linear-gradient(135deg, #ff8fb3, #d087a0);
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        /* Navigation Container */
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .intro-text {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .intro-text h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .intro-text p {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Table of Contents as Links */
+        .toc {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .toc-link {
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: block;
+        }
+
+        .toc-link:active,
+        .toc-link:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+        }
+
+        .toc-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .toc-link h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+        }
+
+        .toc-link p {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .toc-badge {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .toc-badge.critical {
+            background: #ff0000;
+        }
+
+        /* Content Section */
+        .content-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            scroll-margin-top: 70px;
+        }
+
+        #top {
+            scroll-margin-top: 60px;
+        }
+
+        .back-to-top {
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            color: var(--text);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-family: 'Archivo-Fallback', Arial, Helvetica, sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+        }
+
+        .back-to-top:hover,
+        .back-to-top:active {
+            background: var(--accent);
+            color: var(--bg);
+            border-color: var(--accent);
+            transform: translateX(-5px);
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent), #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-header p {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+        }
+
+        .subsection {
+            background: var(--card-bg);
+            border-left: 4px solid var(--accent);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .subsection h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+
+        .subsection h4 {
+            font-size: 1.3rem;
+            margin: 1.5rem 0 1rem;
+            color: var(--text);
+        }
+
+        .checklist {
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        .checklist li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+            padding-left: 2rem;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .checklist li::before {
+            content: '☐';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-size: 1.2rem;
+            transition: all 0.2s ease;
+        }
+
+        .checklist li.checked::before {
+            content: '☑';
+            color: var(--accent);
+        }
+
+        .checklist li.checked {
+            opacity: 0.6;
+            text-decoration: line-through;
+            color: var(--text-dim);
+        }
+
+        .checklist li:hover {
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .checklist li:last-child {
+            border-bottom: none;
+        }
+
+        /* Clear checkboxes button */
+        .clear-checks-btn {
+            background: rgba(255, 51, 102, 0.2);
+            border: 2px solid var(--secondary);
+            color: var(--text);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Archivo-Fallback', Arial, Helvetica, sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .clear-checks-btn:hover,
+        .clear-checks-btn:active {
+            background: var(--secondary);
+            transform: scale(0.98);
+        }
+
+        .alert {
+            background: rgba(255, 51, 102, 0.1);
+            border: 2px solid var(--secondary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .alert.critical {
+            background: rgba(255, 0, 0, 0.1);
+            border-color: #ff0000;
+        }
+
+        .alert-title {
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .alert.critical .alert-title {
+            color: #ff0000;
+        }
+
+        .note {
+            background: rgba(0, 255, 136, 0.05);
+            border-left: 4px solid var(--accent);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .note strong {
+            color: var(--accent);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                padding: 2rem 1rem;
+            }
+
+            .nav-container {
+                padding: 2rem 1rem;
+            }
+
+            .toc {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .content-section {
+                padding: 2rem 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .subsection {
+                padding: 1.5rem;
+            }
+        }
+
+        /* ==================== PET SYSTEM STYLES ==================== */
+        
+        .pet-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .pet-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .pet-header h2 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #ff6b9d, #ffc371);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .pet-selection {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .pet-selection h3 {
+            text-align: center;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .pet-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .pet-option {
+            background: rgba(255, 107, 157, 0.1);
+            border: 2px solid rgba(255, 107, 157, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pet-option:hover,
+        .pet-option:active {
+            border-color: #ff6b9d;
+            background: rgba(255, 107, 157, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 107, 157, 0.3);
+        }
+
+        .pet-option.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pet-option-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .pet-option h4 {
+            color: #ff6b9d;
+            margin-bottom: 0.5rem;
+        }
+
+        .unlock-requirement {
+            display: inline-block;
+            background: rgba(255, 107, 157, 0.2);
+            color: #ff6b9d;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        .pet-display {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .pet-sprite-container {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 1.5rem;
+            background: rgba(255, 107, 157, 0.05);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid rgba(255, 107, 157, 0.3);
+        }
+
+        .pet-sprite {
+            width: 128px;
+            height: 128px;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+        }
+
+        .pet-name-input {
+            background: rgba(255, 107, 157, 0.1);
+            border: 2px solid rgba(255, 107, 157, 0.3);
+            color: var(--text);
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            width: 100%;
+            max-width: 300px;
+            margin: 1rem auto;
+            display: block;
+            text-align: center;
+            font-family: 'Archivo-Fallback', Arial, Helvetica, sans-serif;
+        }
+
+        .pet-name {
+            font-size: 2rem;
+            color: #ff6b9d;
+            margin-bottom: 0.5rem;
+        }
+
+        .pet-stage {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pet-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-box {
+            background: rgba(255, 107, 157, 0.1);
+            border: 2px solid rgba(255, 107, 157, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .stat-label {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            color: #ff6b9d;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b9d, #ffc371);
+            transition: width 0.3s ease;
+        }
+
+        .pet-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #ff6b9d, #c06c84);
+            border: none;
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Archivo-Fallback', Arial, Helvetica, sans-serif;
+        }
+
+        .action-btn:hover,
+        .action-btn:active {
+            background: linear-gradient(135deg, #ff8fb3, #d087a0);
+            transform: translateY(-2px);
+        }
+
+        .action-cost {
+            display: block;
+            font-size: 0.8rem;
+            opacity: 0.9;
+            margin-top: 0.3rem;
+        }
+
+        .pet-shop {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .pet-shop h3 {
+            color: #ff6b9d;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .shop-categories {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .category-btn {
+            background: rgba(255, 107, 157, 0.1);
+            border: 2px solid rgba(255, 107, 157, 0.3);
+            color: var(--text);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Archivo-Fallback', Arial, Helvetica, sans-serif;
+            font-weight: 600;
+        }
+
+        .category-btn.active,
+        .category-btn:hover {
+            background: linear-gradient(135deg, #ff6b9d, #c06c84);
+            color: white;
+            border-color: #ff6b9d;
+        }
+
+        .shop-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .shop-item {
+            background: rgba(255, 107, 157, 0.05);
+            border: 2px solid rgba(255, 107, 157, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .shop-item:hover {
+            border-color: #ff6b9d;
+            background: rgba(255, 107, 157, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .shop-item.owned {
+            opacity: 0.6;
+            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--accent);
+        }
+
+        .shop-item-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .shop-item-name {
+            color: var(--text);
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .shop-item-price {
+            color: #ff6b9d;
+            font-weight: 700;
+        }
+
+        .equip-btn {
+            width: 100%;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            background: linear-gradient(135deg, var(--accent), #00ccff);
+            border: none;
+            border-radius: 8px;
+            color: var(--bg);
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .equip-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.4);
+        }
+
+        .equip-btn.equipped {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+        }
+
+        .equip-btn.equipped:hover {
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .pet-options {
+                grid-template-columns: 1fr;
+            }
+            .pet-stats {
+                grid-template-columns: 1fr;
+            }
+            .pet-actions {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Pet Collection Styles */
+        .collection-btn {
+            width: 100%;
+            padding: 1rem;
+            margin-top: 2rem;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            border: 2px solid #FFD700;
+            border-radius: 12px;
+            color: #000;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .collection-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        .pet-collection {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--card-bg);
+            border: 2px solid var(--accent);
+            border-radius: 20px;
+        }
+
+        .pet-collection h3 {
+            color: var(--accent);
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .collection-subtitle {
+            text-align: center;
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+
+        .collection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .collection-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--border);
+            border-radius: 15px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .collection-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 8px 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .collection-item.active {
+            border-color: #FFD700;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 165, 0, 0.1));
+        }
+
+        .collection-item.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .collection-item.locked:hover {
+            transform: none;
+            border-color: var(--border);
+            box-shadow: none;
+        }
+
+        .collection-pet-sprite {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 0.5rem;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .collection-pet-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.3rem;
+        }
+
+        .collection-pet-status {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        .collection-pet-status.unlocked {
+            color: var(--accent);
+        }
+
+        .collection-pet-status.active-pet {
+            color: #FFD700;
+            font-weight: 700;
+        }
+
+        .back-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--card-bg);
+            border: 2px solid var(--accent);
+            border-radius: 10px;
+            color: var(--accent);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--accent);
+            color: var(--bg);
+        }
+
+    </style>
+</head>
+<body>
+    <header class="header" id="top">
+        <div class="header-content">
+            <h1>CUE BAR OG BILJARD</h1>
+            <p class="subtitle">Employee Routines Manual 2026</p>
+        </div>
+    </header>
+
+    <!-- Sticky Quick Navigation -->
+    <nav class="quick-nav">
+        <button class="quick-nav-btn home" onclick="scrollToSection('top')">🏠 Home</button>
+        <button class="quick-nav-btn" onclick="scrollToSection('opening')">🔓 Opening</button>
+        <button class="quick-nav-btn" onclick="scrollToSection('during-shift')">⚡ During Shift</button>
+        <button class="quick-nav-btn" onclick="scrollToSection('closing')">🔒 Closing</button>
+        <button class="quick-nav-btn" onclick="scrollToSection('private-rooms')">🎯 Rooms</button>
+        <button class="quick-nav-btn" onclick="scrollToSection('weekly')">📅 Weekly</button>
+        <button class="quick-nav-btn" onclick="scrollToSection('guest-service')">⭐ Service</button>
+        <button class="quick-nav-btn" onclick="scrollToSection('upselling')">💰 Upselling</button>
+        <button class="quick-nav-btn" onclick="scrollToSection('difficult-situations')">🛡️ Difficult</button>
+        <button class="quick-nav-btn pet-btn" onclick="scrollToSection('pet')">🐾 Pet</button>
+        <button class="quick-nav-btn" onclick="scrollToSection('games')" style="background: linear-gradient(135deg, #9C27B0, #E91E63); color: white; border-color: #9C27B0;">🎮 Games</button>
+        <button class="quick-nav-btn" onclick="scrollToSection('meditation')" style="background: linear-gradient(135deg, #6A1B9A, #8E24AA); color: white; border-color: #6A1B9A;">🧘 Meditation</button>
+    </nav>
+
+    <!-- Navigation Section -->
+    <div class="nav-container">
+        <div class="intro-text">
+            <h2>Welcome to the Team</h2>
+            <p>Tap any section below to jump directly to the information you need. Each section contains detailed routines and best practices for operating Cue Bar.</p>
+        </div>
+
+        <div class="toc">
+            <a href="#opening" class="toc-link">
+                <span class="toc-icon">🔓</span>
+                <h3>Opening Routines</h3>
+                <p>Complete checklist for opening the venue, including critical fire safety procedures and setup tasks.</p>
+                <span class="toc-badge critical">Critical</span>
+            </a>
+
+            <a href="#during-shift" class="toc-link">
+                <span class="toc-icon">⚡</span>
+                <h3>During Shift</h3>
+                <p>Continuous service routines, guest care, maintenance tasks, and monitoring procedures throughout your shift.</p>
+            </a>
+
+            <a href="#closing" class="toc-link">
+                <span class="toc-icon">🔒</span>
+                <h3>Closing Procedures</h3>
+                <p>Two-person closing checklist covering floor area, bar cleanup, cash handling, and final security checks.</p>
+            </a>
+
+            <a href="#private-rooms" class="toc-link">
+                <span class="toc-icon">🎯</span>
+                <h3>Redroom & Blackroom</h3>
+                <p>Special procedures for private event spaces including setup, service, and closing routines.</p>
+            </a>
+
+            <a href="#weekly" class="toc-link">
+                <span class="toc-icon">📅</span>
+                <h3>Weekly Tasks</h3>
+                <p>Day-specific deep cleaning and maintenance schedules from Monday through Sunday.</p>
+            </a>
+
+            <a href="#guest-service" class="toc-link">
+                <span class="toc-icon">⭐</span>
+                <h3>Guest Service Excellence</h3>
+                <p>Communication techniques, service fundamentals, and creating memorable experiences for guests.</p>
+            </a>
+
+            <a href="#upselling" class="toc-link">
+                <span class="toc-icon">💰</span>
+                <h3>Upselling Techniques</h3>
+                <p>Effective strategies for recommending premium products and enhancing guest experiences through smart suggestions.</p>
+            </a>
+
+            <a href="#difficult-situations" class="toc-link">
+                <span class="toc-icon">🛡️</span>
+                <h3>Handling Difficult Situations</h3>
+                <p>Conflict resolution, intoxicated guests, complaints, and the LAST framework for problem-solving.</p>
+                <span class="toc-badge">Important</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Pet Section -->
+    <div id="pet" class="content-section">
+        <button class="back-to-top" onclick="goToSection('top')">← Back to Menu</button>
+        
+        <div class="pet-container">
+            <div class="pet-header">
+                <h2>🐾 Your Pet Companion 🐾</h2>
+                <p>Complete tasks to earn points and grow your pet!</p>
+            </div>
+
+            <!-- Pet Selection Screen -->
+            <div id="petSelection" class="pet-selection">
+                <h3>Choose Your First Pet!</h3>
+                <p style="text-align: center; color: var(--text-dim); margin-bottom: 2rem;">
+                    Select a starter pet to begin your journey. More pets unlock as you progress!
+                </p>
+                
+                <div class="pet-options">
+                    <div class="pet-option" onclick="selectPet('cat', 'Cat')">
+                        <span class="pet-option-icon">🐱</span>
+                        <h4>Cat</h4>
+                        <p>Playful and curious</p>
+                    </div>
+                    
+                    <div class="pet-option" onclick="selectPet('dog', 'Dog')">
+                        <span class="pet-option-icon">🐶</span>
+                        <h4>Dog</h4>
+                        <p>Loyal and energetic</p>
+                    </div>
+                    
+                    <div class="pet-option" onclick="selectPet('bunny', 'Bunny')">
+                        <span class="pet-option-icon">🐰</span>
+                        <h4>Bunny</h4>
+                        <p>Gentle and sweet</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 2rem; font-size: 1.4rem; opacity: 0.7;">🔒 Unlock Later</h3>
+                
+                <div class="pet-options">
+                    <div class="pet-option locked">
+                        <span class="pet-option-icon">🐟</span>
+                        <h4>Fish</h4>
+                        <span class="unlock-requirement">🔒 100 pts</span>
+                    </div>
+                    
+                    <div class="pet-option locked">
+                        <span class="pet-option-icon">🐦</span>
+                        <h4>Bird</h4>
+                        <span class="unlock-requirement">🔒 100 pts</span>
+                    </div>
+                    
+                    <div class="pet-option locked">
+                        <span class="pet-option-icon">☕</span>
+                        <h4>Coffee Bean</h4>
+                        <span class="unlock-requirement">🔒 100 pts</span>
+                    </div>
+
+                    <div class="pet-option locked">
+                        <span class="pet-option-icon">🦊</span>
+                        <h4>Fox</h4>
+                        <span class="unlock-requirement">🔒 300 pts</span>
+                    </div>
+                    
+                    <div class="pet-option locked">
+                        <span class="pet-option-icon">🐻</span>
+                        <h4>Bear</h4>
+                        <span class="unlock-requirement">🔒 300 pts</span>
+                    </div>
+                    
+                    <div class="pet-option locked">
+                        <span class="pet-option-icon">🎱</span>
+                        <h4>Billiard Ball</h4>
+                        <span class="unlock-requirement">🔒 300 pts</span>
+                    </div>
+
+                    <div class="pet-option locked">
+                        <span class="pet-option-icon">🐲</span>
+                        <h4>Dragon</h4>
+                        <span class="unlock-requirement">🔒 800 pts</span>
+                    </div>
+                    
+                    <div class="pet-option locked">
+                        <span class="pet-option-icon">🦄</span>
+                        <h4>Unicorn</h4>
+                        <span class="unlock-requirement">🔒 800 pts</span>
+                    </div>
+                    
+                    <div class="pet-option locked">
+                        <span class="pet-option-icon">🍺</span>
+                        <h4>Beer Buddy</h4>
+                        <span class="unlock-requirement">🔒 800 pts</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pet Display -->
+            <div id="petDisplay" class="pet-display" style="display: none;">
+                <div class="pet-sprite-container">
+                    <canvas id="petCanvas" class="pet-sprite" width="128" height="128"></canvas>
+                </div>
+                
+                <input type="text" id="petNameInput" class="pet-name-input" placeholder="Name your pet..." maxlength="15">
+                <div class="pet-name" id="petName">Your Pet</div>
+                <div class="pet-stage" id="petStage">Baby Stage</div>
+                
+                <div class="pet-stats">
+                    <div class="stat-box">
+                        <div class="stat-label">⭐ Task Points</div>
+                        <div class="stat-value" id="taskPoints">0</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="pointsProgress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-box">
+                        <div class="stat-label">😊 Happiness</div>
+                        <div class="stat-value" id="happiness">50</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="happinessProgress" style="width: 50%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-box">
+                        <div class="stat-label">⚡ Energy</div>
+                        <div class="stat-value" id="energy">50</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="energyProgress" style="width: 50%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-box">
+                        <div class="stat-label">💎 Gems</div>
+                        <div class="stat-value" id="gems">0</div>
+                    </div>
+                </div>
+                
+                <div class="pet-actions">
+                    <button class="action-btn" onclick="feedPet()">
+                        🍖 Feed
+                        <span class="action-cost">5 points</span>
+                    </button>
+                    
+                    <button class="action-btn" onclick="playWithPet()">
+                        🎾 Play
+                        <span class="action-cost">10 points</span>
+                    </button>
+                    
+                    <button class="action-btn" onclick="washPet()">
+                        🛁 Wash
+                        <span class="action-cost">5 points</span>
+                    </button>
+                    
+                    <button class="action-btn" onclick="giveGift()">
+                        🎁 Gift
+                        <span class="action-cost">20 points</span>
+                    </button>
+                </div>
+                
+                <button class="collection-btn" onclick="showCollection()">
+                    🏆 View Pet Collection
+                </button>
+            </div>
+
+            <!-- Pet Collection Gallery -->
+            <div id="petCollection" class="pet-collection" style="display: none;">
+                <h3>🏆 Pet Collection Gallery</h3>
+                <p class="collection-subtitle">Collect all pets by completing tasks!</p>
+                
+                <div class="collection-grid" id="collectionGrid"></div>
+                
+                <button class="back-btn" onclick="hideCollection()">← Back to Pet</button>
+            </div>
+
+            <!-- Shop -->
+            <div id="petShop" class="pet-shop" style="display: none;">
+                <h3>🏪 Pet Shop</h3>
+                
+                <div class="shop-categories">
+                    <button class="category-btn active" onclick="showShopCategory('decorations', this)">🛋️ Decorations</button>
+                    <button class="category-btn" onclick="showShopCategory('costumes', this)">👔 Costumes</button>
+                    <button class="category-btn" onclick="showShopCategory('backgrounds', this)">🖼️ Backgrounds</button>
+                </div>
+                
+                <div id="shopItems" class="shop-items">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <button class="back-to-top" onclick="goToSection('top')">← Back to Menu</button>
+    </div>
+
+    <!-- Content Sections -->
+    <div id="opening" class="content-section">
+        <button class="back-to-top">← Back to Menu</button>
+        
+        <div class="section-header">
+            <h2>Opening Routines</h2>
+            <p>Setting the foundation for a successful operating day</p>
+        </div>
+
+        <div class="alert critical">
+            <div class="alert-title">⚠️ Critical Priority</div>
+            <p>The first thing when opening is to <strong>unlock the fire doors</strong> so people can exit in case of emergency. You must also ensure you have a <strong>green vest available</strong> to direct guests in the event of a fire alarm.</p>
+        </div>
+
+        <div class="subsection">
+            <h3>Bar Area Setup</h3>
+            <ul class="checklist">
+                <li data-points="2">Count cash and register beers, note the amount counted</li>
+                <li data-points="1">Fill the register numbers</li>
+                <li data-points="3">Turn on all machines and check them inside - wash extra inside</li>
+                <li data-points="1">Boil water for the sinks</li>
+                <li data-points="1">Take trash buckets to the bar area</li>
+                <li data-points="2">Check ice buckets (wash) and prepare ice</li>
+                <li data-points="2">Take the cups from the bottles and wash them in the machine</li>
+                <li data-points="1">Clean the sinks with boiling water</li>
+                <li data-points="1">Get ice ready before guests arrive</li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <h3>Floor & Guest Area</h3>
+            <ul class="checklist">
+                <li data-points="2">Check for bookings, write them out and place on tables (make cheat sheet if many)</li>
+                <li data-points="1">Walk around and check that pool cues are in their proper place</li>
+                <li data-points="1">Check for glasses under artwork/decorations/pool tables</li>
+                <li data-points="1">Check all sitting areas for spilled items or mess</li>
+                <li data-points="1">Verify everything is in place from yesterday</li>
+                <li data-points="2">Ensure all tables are clean and washed</li>
+                <li data-points="1">Take chairs down from tables</li>
+                <li data-points="1">Place pillows in designated areas</li>
+                <li data-points="1">Put cues, chairs, and triangles in their proper places</li>
+                <li data-points="1">Prepare candles (ready to light at 17:00)</li>
+                <li data-points="1">Light up dart areas</li>
+                <li data-points="1">Turn on lights</li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <h3>Final Opening Steps</h3>
+            <ul class="checklist">
+                <li data-points="1">Set correct lighting throughout the venue</li>
+                <li data-points="1">Turn on music in main areas</li>
+                <li data-points="1">Turn on music in the Blackroom</li>
+                <li data-points="2">Check Blackroom and Redroom are tidy and ready - notify managers via chat</li>
+                <li data-points="2">Double check if the fire doors are open</li>
+                <li data-points="1">Go downstairs and unlock entrance door for guests</li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <h3>After Opening the Door</h3>
+            <p style="margin-bottom: 1rem; color: var(--text-dim);">These tasks can be completed after guests arrive, as you have time between service:</p>
+            <ul class="checklist">
+                <li data-points="1">Set up coffee machine</li>
+                <li data-points="1">Check and restock all fridges</li>
+                <li data-points="1">Supply walk-in fridges as needed (bartender 2/3?)</li>
+                <li data-points="1">Check wine cabinet - clean it and remove fingerprints</li>
+                <li data-points="1">Check storage areas if tidy, plan tidying up if not</li>
+                <li data-points="1">Go through juice cabinet - discard/store as needed</li>
+                <li data-points="1">Check dates on all syrups that will go bad within a few days</li>
+                <li data-points="1">Pour syrups into new bottles if needed</li>
+            </ul>
+
+            <div class="note">
+                <strong>NOTE:</strong> Monin syrup containers become disgusting after a long day - they need to be cleaned more often. At minimum, rinse thoroughly in hot water! No nasty bottles in da house.
+            </div>
+        </div>
+
+        <button class="back-to-top">← Back to Menu</button>
+    </div>
+
+    <div id="during-shift" class="content-section">
+        <button class="back-to-top">← Back to Menu</button>
+        
+        <div class="section-header">
+            <h2>During Shift Routines</h2>
+            <p>Continuous service and maintenance throughout your shift</p>
+        </div>
+
+        <div class="subsection">
+            <h3>Continuous Guest Service</h3>
+            <ul class="checklist">
+                <li data-points="1">Clean billiard tables after guests use them (use holy water)</li>
+                <li data-points="1">Clean billiard balls after they are used</li>
+                <li data-points="1">Clean and wipe tables after guests leave</li>
+                <li data-points="1">Wipe down the bar counter regularly</li>
+                <li data-points="1">Regularly go outside to collect dirty glasses</li>
+                <li data-points="1">Monitor guests and control alcohol levels</li>
+                <li data-points="1">Sweep/clean the bar area - watch for beer stains and spills</li>
+                <li data-points="1">Put cues and triangles back in their proper places</li>
+                <li data-points="1">Continuously restock fridges and supplies as needed</li>
+                <li data-points="1">Refill paper in the toilets as needed</li>
+                <li data-points="1">Check toilets regularly, remove paper from the floor</li>
+                <li data-points="1">Re-light candles as needed</li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <h3>At 17:00 (5 PM)</h3>
+            <ul class="checklist">
+                <li data-points="1">Change lighting throughout the venue</li>
+                <li data-points="1">Light all candles</li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <h3>Bar Maintenance During Shift</h3>
+            <ul class="checklist">
+                <li data-points="1">Restock liquor bottles as they run low</li>
+                <li data-points="1">Restock fridges and pool room supplies</li>
+                <li data-points="1">Put clean and cold glasses in their proper places</li>
+                <li data-points="1">Keep an eye on which glasses are needed, notify management if needed</li>
+                <li data-points="1">Polish pool balls regularly</li>
+                <li data-points="1">Get ice as needed</li>
+                <li data-points="1">Empty and close dishwashers when full</li>
+                <li data-points="1">Help with floor cleaning if necessary, tidy at all times</li>
+                <li data-points="1">Take pant & kegs downstairs when needed</li>
+                <li data-points="1">Change beer kegs when needed</li>
+                <li data-points="1">Pant bag from walk-in fridge needs to be taken downstairs with the pants</li>
+            </ul>
+
+            <div class="note">
+                <strong>Note:</strong> Watch the floor constantly - you can often spot drunk guests, broken glasses, spills, or inappropriate items before security does. Stay vigilant for anything that doesn't belong at Cue.
+            </div>
+        </div>
+
+        <button class="back-to-top">← Back to Menu</button>
+    </div>
+
+    <!-- Games Section -->
+    <div id="games" class="content-section">
+        <button class="back-to-top">← Back to Menu</button>
+        
+        <div class="section-header">
+            <h2>🎮 Break Time Games</h2>
+            <p>Take a quick break and play some games!</p>
+        </div>
+
+        <div style="max-width: 600px; margin: 2rem auto; padding: 2rem; background: var(--card-bg); border: 2px solid #9C27B0; border-radius: 20px;">
+            <h3 style="text-align: center; color: #E91E63; margin-bottom: 1rem;">🐍 Snake Game</h3>
+            <p style="text-align: center; color: var(--text-dim); margin-bottom: 1rem;">
+                <strong>Desktop:</strong> Arrow keys or WASD<br>
+                <strong>Mobile:</strong> Swipe or tap arrows<br>
+                Eat the food to grow!<br>
+                <span style="color: var(--accent); font-weight: 600;">✨ Bonus: Snake wraps through walls!</span>
+            </p>
+            
+            <div style="text-align: center; margin-bottom: 1rem;">
+                <div style="display: inline-block; margin: 0 1rem;">
+                    <span style="color: var(--accent); font-weight: 700; font-size: 1.2rem;">Score: <span id="snakeScore">0</span></span>
+                </div>
+                <div style="display: inline-block; margin: 0 1rem;">
+                    <span style="color: #FFD700; font-weight: 700; font-size: 1.2rem;">High: <span id="snakeHighScore">0</span></span>
+                </div>
+            </div>
+            
+            <canvas id="snakeCanvas" width="400" height="400" style="display: block; margin: 0 auto; background: #0a0a0a; border: 3px solid var(--accent); border-radius: 10px; max-width: 100%;"></canvas>
+            
+            <!-- On-Screen Arrow Controls for Mobile -->
+            <div style="display: flex; flex-direction: column; align-items: center; margin: 1.5rem auto; gap: 0.3rem; max-width: 200px;">
+                <!-- UP button -->
+                <button id="arrowUp" style="width: 65px; height: 65px; background: linear-gradient(135deg, #00ff88, #00ccff); border: 3px solid var(--accent); border-radius: 12px; font-size: 2rem; cursor: pointer; box-shadow: 0 4px 10px rgba(0,255,136,0.3); touch-action: manipulation; transition: transform 0.1s;">
+                    ⬆️
+                </button>
+                <!-- LEFT, DOWN, RIGHT row -->
+                <div style="display: flex; gap: 0.3rem; justify-content: center;">
+                    <button id="arrowLeft" style="width: 65px; height: 65px; background: linear-gradient(135deg, #00ff88, #00ccff); border: 3px solid var(--accent); border-radius: 12px; font-size: 2rem; cursor: pointer; box-shadow: 0 4px 10px rgba(0,255,136,0.3); touch-action: manipulation; transition: transform 0.1s;">
+                        ⬅️
+                    </button>
+                    <button id="arrowDown" style="width: 65px; height: 65px; background: linear-gradient(135deg, #00ff88, #00ccff); border: 3px solid var(--accent); border-radius: 12px; font-size: 2rem; cursor: pointer; box-shadow: 0 4px 10px rgba(0,255,136,0.3); touch-action: manipulation; transition: transform 0.1s;">
+                        ⬇️
+                    </button>
+                    <button id="arrowRight" style="width: 65px; height: 65px; background: linear-gradient(135deg, #00ff88, #00ccff); border: 3px solid var(--accent); border-radius: 12px; font-size: 2rem; cursor: pointer; box-shadow: 0 4px 10px rgba(0,255,136,0.3); touch-action: manipulation; transition: transform 0.1s;">
+                        ➡️
+                    </button>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 1rem;">
+                <button id="snakeStartBtn" onclick="startSnakeGame()" style="padding: 0.8rem 2rem; background: linear-gradient(135deg, var(--accent), #00ccff); border: none; border-radius: 10px; color: var(--bg); font-size: 1.1rem; font-weight: 700; cursor: pointer; margin: 0.5rem;">
+                    ▶️ Start Game
+                </button>
+                <button onclick="pauseSnakeGame()" style="padding: 0.8rem 2rem; background: linear-gradient(135deg, #FFA500, #FF6347); border: none; border-radius: 10px; color: white; font-size: 1.1rem; font-weight: 700; cursor: pointer; margin: 0.5rem;">
+                    ⏸️ Pause
+                </button>
+            </div>
+            
+            <div id="snakeGameOver" style="display: none; text-align: center; margin-top: 1rem; padding: 1rem; background: rgba(255, 0, 0, 0.1); border: 2px solid #FF0000; border-radius: 10px;">
+                <h3 style="color: #FF0000; margin-bottom: 0.5rem;">Game Over! 💀</h3>
+                <p style="color: var(--text); font-size: 1.2rem; margin-bottom: 1rem;">Final Score: <span id="finalScore">0</span></p>
+                <button onclick="startSnakeGame()" style="padding: 0.8rem 2rem; background: var(--accent); border: none; border-radius: 10px; color: var(--bg); font-size: 1rem; font-weight: 700; cursor: pointer;">
+                    🔄 Play Again
+                </button>
+            </div>
+        </div>
+
+        <button class="back-to-top">← Back to Menu</button>
+    </div>
+
+    <div id="meditation" class="content-section">
+        <button class="back-to-top">← Back to Menu</button>
+        
+        <div class="section-header">
+            <h2>🧘 Meditation & Breathwork</h2>
+            <p>Quick techniques to reduce stress, stay calm, and reset during shifts</p>
+        </div>
+
+        <div class="alert" style="background: linear-gradient(135deg, rgba(106, 27, 154, 0.1), rgba(142, 36, 170, 0.1)); border-color: #8E24AA;">
+            <div class="alert-title" style="color: #8E24AA;">🌟 Why This Matters</div>
+            <p>Working in hospitality can be intense. These quick techniques help you stay centered, reduce stress, and maintain energy throughout your shift. Even 30 seconds can make a difference!</p>
+        </div>
+
+        <div class="subsection">
+            <h3>⚡ Quick Breathing Techniques (30 seconds - 2 minutes)</h3>
+            
+            <div style="background: rgba(142, 36, 170, 0.05); padding: 1.5rem; border-radius: 10px; margin-bottom: 1.5rem; border-left: 4px solid #8E24AA;">
+                <h4 style="color: #8E24AA; margin-bottom: 1rem;">📦 Box Breathing (2 minutes)</h4>
+                <p style="margin-bottom: 1rem; color: var(--text-dim);">Perfect for stressful moments. Used by Navy SEALs for staying calm under pressure.</p>
+                <ol style="margin-left: 1.5rem; color: var(--text);">
+                    <li style="margin-bottom: 0.5rem;"><strong>Inhale</strong> through nose for 4 counts</li>
+                    <li style="margin-bottom: 0.5rem;"><strong>Hold</strong> for 4 counts</li>
+                    <li style="margin-bottom: 0.5rem;"><strong>Exhale</strong> through mouth for 4 counts</li>
+                    <li style="margin-bottom: 0.5rem;"><strong>Hold empty</strong> for 4 counts</li>
+                    <li>Repeat 4-6 times</li>
+                </ol>
+                <p style="margin-top: 1rem; color: var(--accent); font-weight: 600;">✨ Best for: Anxiety, overwhelm, before difficult conversations</p>
+            </div>
+
+            <div style="background: rgba(142, 36, 170, 0.05); padding: 1.5rem; border-radius: 10px; margin-bottom: 1.5rem; border-left: 4px solid #8E24AA;">
+                <h4 style="color: #8E24AA; margin-bottom: 1rem;">⚡ 4-7-8 Breathing (1 minute)</h4>
+                <p style="margin-bottom: 1rem; color: var(--text-dim);">Instantly calms the nervous system. Great for quick resets.</p>
+                <ol style="margin-left: 1.5rem; color: var(--text);">
+                    <li style="margin-bottom: 0.5rem;"><strong>Exhale</strong> completely through mouth (whoosh sound)</li>
+                    <li style="margin-bottom: 0.5rem;"><strong>Inhale</strong> quietly through nose for 4 counts</li>
+                    <li style="margin-bottom: 0.5rem;"><strong>Hold</strong> for 7 counts</li>
+                    <li style="margin-bottom: 0.5rem;"><strong>Exhale</strong> through mouth for 8 counts (whoosh)</li>
+                    <li>Repeat 3-4 times</li>
+                </ol>
+                <p style="margin-top: 1rem; color: var(--accent); font-weight: 600;">✨ Best for: Quick stress relief, resetting between rushes, before break</p>
+            </div>
+
+            <div style="background: rgba(142, 36, 170, 0.05); padding: 1.5rem; border-radius: 10px; margin-bottom: 1.5rem; border-left: 4px solid #8E24AA;">
+                <h4 style="color: #8E24AA; margin-bottom: 1rem;">🔋 Energizing Breath (30 seconds)</h4>
+                <p style="margin-bottom: 1rem; color: var(--text-dim);">Quick energy boost when you're feeling tired or sluggish.</p>
+                <ol style="margin-left: 1.5rem; color: var(--text);">
+                    <li style="margin-bottom: 0.5rem;">Stand up straight, shoulders back</li>
+                    <li style="margin-bottom: 0.5rem;"><strong>Quick inhale</strong> through nose (1 count)</li>
+                    <li style="margin-bottom: 0.5rem;"><strong>Quick exhale</strong> through mouth (1 count)</li>
+                    <li style="margin-bottom: 0.5rem;">Repeat rapidly for 20-30 breaths</li>
+                    <li>Finish with one deep breath in, hold 5 seconds, slow exhale</li>
+                </ol>
+                <p style="margin-top: 1rem; color: var(--accent); font-weight: 600;">✨ Best for: Mid-shift energy dip, after cleaning tasks, before busy period</p>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3>🌊 Grounding Techniques (1-3 minutes)</h3>
+            
+            <div style="background: rgba(142, 36, 170, 0.05); padding: 1.5rem; border-radius: 10px; margin-bottom: 1.5rem; border-left: 4px solid #8E24AA;">
+                <h4 style="color: #8E24AA; margin-bottom: 1rem;">👁️ 5-4-3-2-1 Grounding (2 minutes)</h4>
+                <p style="margin-bottom: 1rem; color: var(--text-dim);">Brings you back to the present moment when feeling overwhelmed.</p>
+                <ol style="margin-left: 1.5rem; color: var(--text);">
+                    <li style="margin-bottom: 0.5rem;"><strong>5 things you can SEE</strong> - Look around, name 5 objects</li>
+                    <li style="margin-bottom: 0.5rem;"><strong>4 things you can TOUCH</strong> - Feel textures around you</li>
+                    <li style="margin-bottom: 0.5rem;"><strong>3 things you can HEAR</strong> - Notice sounds in the environment</li>
+                    <li style="margin-bottom: 0.5rem;"><strong>2 things you can SMELL</strong> - Focus on any scents</li>
+                    <li><strong>1 thing you can TASTE</strong> - Notice taste in your mouth</li>
+                </ol>
+                <p style="margin-top: 1rem; color: var(--accent); font-weight: 600;">✨ Best for: Feeling scattered, anxiety, after difficult customer interaction</p>
+            </div>
+
+            <div style="background: rgba(142, 36, 170, 0.05); padding: 1.5rem; border-radius: 10px; margin-bottom: 1.5rem; border-left: 4px solid #8E24AA;">
+                <h4 style="color: #8E24AA; margin-bottom: 1rem;">🦶 Body Scan (3 minutes)</h4>
+                <p style="margin-bottom: 1rem; color: var(--text-dim);">Release physical tension that builds up during shifts.</p>
+                <ol style="margin-left: 1.5rem; color: var(--text);">
+                    <li style="margin-bottom: 0.5rem;">Stand or sit comfortably, close eyes if possible</li>
+                    <li style="margin-bottom: 0.5rem;"><strong>Start at feet</strong> - Notice any tension, wiggle toes</li>
+                    <li style="margin-bottom: 0.5rem;"><strong>Move to legs</strong> - Tense and release muscles</li>
+                    <li style="margin-bottom: 0.5rem;"><strong>Scan torso</strong> - Deep breath, soften belly</li>
+                    <li style="margin-bottom: 0.5rem;"><strong>Check shoulders</strong> - Roll them back, drop tension</li>
+                    <li style="margin-bottom: 0.5rem;"><strong>Relax face</strong> - Unclench jaw, soften forehead</li>
+                    <li>Take 3 deep breaths</li>
+                </ol>
+                <p style="margin-top: 1rem; color: var(--accent); font-weight: 600;">✨ Best for: Physical tension, neck/shoulder pain, during breaks</p>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3>💭 Quick Mental Reset (1-2 minutes)</h3>
+            
+            <div style="background: rgba(142, 36, 170, 0.05); padding: 1.5rem; border-radius: 10px; margin-bottom: 1.5rem; border-left: 4px solid #8E24AA;">
+                <h4 style="color: #8E24AA; margin-bottom: 1rem;">🎯 One-Minute Mindfulness</h4>
+                <p style="margin-bottom: 1rem; color: var(--text-dim);">Simple awareness practice you can do anywhere.</p>
+                <ol style="margin-left: 1.5rem; color: var(--text);">
+                    <li style="margin-bottom: 0.5rem;">Set intention: "For one minute, I'm just present"</li>
+                    <li style="margin-bottom: 0.5rem;">Focus on your breath - natural rhythm</li>
+                    <li style="margin-bottom: 0.5rem;">When thoughts come (they will!), just notice them</li>
+                    <li style="margin-bottom: 0.5rem;">Gently return focus to breath</li>
+                    <li>No judgment, no "doing it wrong"</li>
+                </ol>
+                <p style="margin-top: 1rem; color: var(--accent); font-weight: 600;">✨ Best for: Racing thoughts, before shift starts, mental clarity</p>
+            </div>
+
+            <div style="background: rgba(142, 36, 170, 0.05); padding: 1.5rem; border-radius: 10px; margin-bottom: 1.5rem; border-left: 4px solid #8E24AA;">
+                <h4 style="color: #8E24AA; margin-bottom: 1rem;">🌟 Positive Reset Phrase</h4>
+                <p style="margin-bottom: 1rem; color: var(--text-dim);">Quick mental reframe when things feel overwhelming.</p>
+                <div style="background: rgba(0, 255, 136, 0.05); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <p style="margin-bottom: 0.5rem; color: var(--text);"><strong>Repeat 3 times (out loud or in your head):</strong></p>
+                    <ul style="margin-left: 1.5rem; color: var(--text);">
+                        <li>"I can handle this moment"</li>
+                        <li>"This feeling is temporary"</li>
+                        <li>"I've got through harder things before"</li>
+                        <li>"One task at a time"</li>
+                        <li>"I choose calm" (simple but powerful)</li>
+                    </ul>
+                </div>
+                <p style="margin-top: 1rem; color: var(--accent); font-weight: 600;">✨ Best for: Feeling overwhelmed, self-doubt, frustration</p>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3>⏰ When to Use These Techniques</h3>
+            
+            <div style="display: grid; gap: 1rem; margin-top: 1rem;">
+                <div style="background: rgba(0, 255, 136, 0.05); padding: 1rem; border-radius: 8px; border-left: 3px solid var(--accent);">
+                    <strong style="color: var(--accent);">Before Shift:</strong>
+                    <p style="color: var(--text-dim); margin-top: 0.5rem;">One-Minute Mindfulness + Box Breathing = Clear head, ready energy</p>
+                </div>
+                
+                <div style="background: rgba(0, 255, 136, 0.05); padding: 1rem; border-radius: 8px; border-left: 3px solid var(--accent);">
+                    <strong style="color: var(--accent);">During Rush:</strong>
+                    <p style="color: var(--text-dim); margin-top: 0.5rem;">4-7-8 Breathing (in storage room) = Quick reset between orders</p>
+                </div>
+                
+                <div style="background: rgba(0, 255, 136, 0.05); padding: 1rem; border-radius: 8px; border-left: 3px solid var(--accent);">
+                    <strong style="color: var(--accent);">After Difficult Customer:</strong>
+                    <p style="color: var(--text-dim); margin-top: 0.5rem;">5-4-3-2-1 Grounding + Positive Reset Phrase = Back to baseline</p>
+                </div>
+                
+                <div style="background: rgba(0, 255, 136, 0.05); padding: 1rem; border-radius: 8px; border-left: 3px solid var(--accent);">
+                    <strong style="color: var(--accent);">On Break:</strong>
+                    <p style="color: var(--text-dim); margin-top: 0.5rem;">Body Scan = Release physical tension, recharge energy</p>
+                </div>
+                
+                <div style="background: rgba(0, 255, 136, 0.05); padding: 1rem; border-radius: 8px; border-left: 3px solid var(--accent);">
+                    <strong style="color: var(--accent);">Feeling Tired:</strong>
+                    <p style="color: var(--text-dim); margin-top: 0.5rem;">Energizing Breath = Natural energy boost (better than coffee!)</p>
+                </div>
+                
+                <div style="background: rgba(0, 255, 136, 0.05); padding: 1rem; border-radius: 8px; border-left: 3px solid var(--accent);">
+                    <strong style="color: var(--accent);">End of Shift:</strong>
+                    <p style="color: var(--text-dim); margin-top: 0.5rem;">4-7-8 Breathing = Let go of work stress, transition home</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert" style="background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 204, 102, 0.1)); border-color: var(--accent);">
+            <div class="alert-title" style="color: var(--accent);">💡 Pro Tips</div>
+            <ul style="margin-left: 1.5rem; color: var(--text);">
+                <li style="margin-bottom: 0.5rem;"><strong>No space is private?</strong> Go to the bathroom for 2 minutes - totally normal!</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Breathing looks weird?</strong> Do it while organizing or cleaning - nobody notices</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Can't remember steps?</strong> Just focus on slow, deep breaths - that's 80% of the benefit</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Doesn't work immediately?</strong> That's normal! Effects build with practice</li>
+                <li><strong>30 seconds is better than nothing</strong> - don't wait for "perfect conditions"</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem; padding: 2rem; background: linear-gradient(135deg, rgba(106, 27, 154, 0.1), rgba(142, 36, 170, 0.1)); border-radius: 15px;">
+            <h3 style="color: #8E24AA; margin-bottom: 1rem;">🌟 Remember</h3>
+            <p style="color: var(--text); font-size: 1.1rem; line-height: 1.6;">
+                Your mental and physical wellbeing directly impacts your ability to serve guests well. 
+                Taking 30 seconds to reset isn't selfish - it's professional.<br><br>
+                <strong style="color: var(--accent);">You can't pour from an empty cup. Take care of yourself! 💚</strong>
+            </p>
+        </div>
+
+        <button class="back-to-top">← Back to Menu</button>
+    </div>
+
+    <div id="closing" class="content-section">
+        <button class="back-to-top">← Back to Menu</button>
+        
+        <div class="section-header">
+            <h2>Closing Procedures</h2>
+            <p>Two-person closing checklist</p>
+        </div>
+
+        <div class="alert">
+            <div class="alert-title">Team Requirement</div>
+            <p>Closing requires two people: one handles the outside/floor area, the other handles the bar interior. Work together to ensure everything is properly closed and cleaned.</p>
+        </div>
+
+        <div class="subsection">
+            <h3>Person 1: Outside & Floor Area</h3>
+            <ul class="checklist">
+                <li data-points="1">Close the door downstairs and bring the pant bag with you</li>
+                <li data-points="2">Clean all pool tables</li>
+                <li data-points="1">Clean all guest tables</li>
+                <li data-points="1">Clean table tennis tables</li>
+                <li data-points="1">Put locks on the fire exit door</li>
+                <li data-points="1">Turn off all dart lights</li>
+                <li data-points="1">Arrange all chairs: some on tables, some neatly on floor</li>
+                <li data-points="1">Put cues, triangles, and pillows in their proper places</li>
+                <li data-points="1">Gather all chalk (kritt) and return to storage</li>
+                <li data-points="1">Pull chairs and stools into their usual positions</li>
+                <li data-points="1">Put chairs up on stage</li>
+                <li data-points="1">Turn off music in Blackroom</li>
+                <li data-points="1">Check for lost and found items - place next to entrance or in the box</li>
+                <li data-points="1">Lock side door and main door</li>
+                <li data-points="1">Verify everything has been done properly</li>
+                <li data-points="1">Turn off lights</li>
+                <li data-points="1">Turn on alarm</li>
+            </ul>
+
+            <div class="alert">
+                <div class="alert-title">Important</div>
+                <p>If you want Blackroom and Redroom to be cleaned, leave doors OPEN for cleaning staff!</p>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3>Person 2: Inside Bar Area</h3>
+            
+            <h4>Equipment & Surfaces</h4>
+            <ul class="checklist">
+                <li data-points="1">Clean all cocktail equipment from used stations</li>
+                <li data-points="1">Clean silver plates from the water station</li>
+                <li data-points="1">Clean rubber mats (gumms) for beer taps</li>
+                <li data-points="1">Clean all surfaces with Jif including cash register (kassa), terminals, and water towel holder</li>
+                <li data-points="1">Put on boiling water and wash all sinks thoroughly</li>
+                <li data-points="1">Boil water and clean all beer taps with it - use glass method</li>
+            </ul>
+
+            <h4>Bottles & Syrups</h4>
+            <ul class="checklist">
+                <li data-points="1">Close all bottles with caps</li>
+                <li data-points="1">Check shelves for any bottles that need caps</li>
+                <li data-points="1">Clean syrup bottles so they're not sticky - use warm water and clean with paper towels</li>
+                <li data-points="1">Double check wine bottles have dates on them</li>
+            </ul>
+
+            <h4>Glasses & Dishwasher</h4>
+            <ul class="checklist">
+                <li data-points="1">Clean all glasses</li>
+                <li data-points="1">Wash the tray that holds dirty glasses just before turning off machine</li>
+                <li data-points="1">Turn off the dishwashing machine</li>
+                <li data-points="1">Wash the machine and filters properly</li>
+                <li data-points="1">Dry inside the machine with paper towels to remove all residue</li>
+                <li data-points="1">Use vinegar to wash the door inside and outside</li>
+                <li data-points="1">Wipe all machines inside after turning off</li>
+            </ul>
+
+            <h4>Trash & Cleaning</h4>
+            <ul class="checklist">
+                <li data-points="1">Carry all trash bags to the hallway</li>
+                <li data-points="1">Check staff storage for additional trash</li>
+                <li data-points="1">Empty pant</li>
+                <li data-points="1">Take out all trash</li>
+                <li data-points="1">Get better at cleaning all sinks thoroughly</li>
+            </ul>
+
+            <h4>Cash & Reporting</h4>
+            <ul class="checklist">
+                <li data-points="1">Send out faktura (check tabs) - check "bookingtjenester" for faktura info</li>
+                <li data-points="1">Take Z-report from all registers</li>
+                <li data-points="1">Print out X and Z reports</li>
+                <li data-points="1">Write down the numbers and add comments if needed</li>
+                <li data-points="1">Fill the register numbers (oppgjør)</li>
+                <li data-points="1">Count all cash</li>
+                <li data-points="1">Write the date and amount on plastic bag</li>
+                <li data-points="1">Take cash to the safe</li>
+                <li data-points="1">Report any missing pool or dart cards to management</li>
+            </ul>
+
+            <h4>Final Tasks</h4>
+            <ul class="checklist">
+                <li data-points="2"><strong>Restock the fridges</strong> - Check all fridges and restock from storage</li>
+            </ul>
+        </div>
+
+        <button class="back-to-top">← Back to Menu</button>
+    </div>
+
+    <div id="private-rooms" class="content-section">
+        <button class="back-to-top">← Back to Menu</button>
+        
+        <div class="section-header">
+            <h2>Redroom & Blackroom Routines</h2>
+            <p>Special procedures for private event spaces</p>
+        </div>
+
+        <div class="subsection">
+            <h3>Opening</h3>
+            <ul class="checklist">
+                <li data-points="1">Check description in "bookingtjeneste"</li>
+                <li data-points="1">Open bar: Trashcans, ice, drink supplies, write down Ringnes count</li>
+                <li data-points="1">Refill glasses in bar if needed</li>
+                <li data-points="1">Light candles</li>
+                <li data-points="1">Start pouring some of the welcome drinks before guests start to arrive</li>
+                <li data-points="1">If special needs for the room and bigger companies - coordinate with other bartender or host</li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <h3>Closing Bar</h3>
+            <ul class="checklist">
+                <li data-points="1">Close and clean the bar 30 min before event is over</li>
+                <li data-points="1">Clean champagne buckets in the washing machine</li>
+                <li data-points="1">Clean water glass trays</li>
+                <li data-points="1">Take out all opened wine bottles and drink supplies to main bar</li>
+                <li data-points="1">Send out faktura, information is noted in "Bookingtjenester". In doubt - check tab on "redroom" or "blackroom"</li>
+                <li data-points="2"><strong>Restock bar fridges</strong> - Refill with drinks from storage</li>
+                <li data-points="1">Trash from the private venues can be stored in the hallway of the rooms - if closed before main bar (Notify Bartender 1)</li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <h3>Closing Floor</h3>
+            <ul class="checklist">
+                <li data-points="1">Clean remaining space after guests leave</li>
+                <li data-points="1">Put up all chairs or gather them together</li>
+                <li data-points="1">Place table cloths in the storage room in redrum, or in a plastic bag and leave it in the redrum bar</li>
+                <li data-points="1">Clean tables, chairs and DJ booth</li>
+                <li data-points="1">Clean pool table and balls in Redroom</li>
+                <li data-points="1">Turn off both mixer and speakers</li>
+            </ul>
+
+            <div class="alert">
+                <div class="alert-title">Remember</div>
+                <p>Keep the door into Redroom & Blackroom open after closing, so the washing people know they are supposed to wash there.</p>
+            </div>
+        </div>
+
+        <button class="back-to-top">← Back to Menu</button>
+    </div>
+
+    <div id="weekly" class="content-section">
+        <button class="back-to-top">← Back to Menu</button>
+        
+        <div class="section-header">
+            <h2>Weekly Opening Tasks</h2>
+            <p>Day-specific deep cleaning and maintenance schedules</p>
+        </div>
+
+        <div class="subsection">
+            <h3>Every Weekday</h3>
+            <ul class="checklist">
+                <li data-points="1">Wash and clean coffee machine (milk container!)</li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <h3>Monday</h3>
+            <ul class="checklist">
+                <li data-points="1">Stock up from storage areas (if slow day)</li>
+                <li data-points="1">Check if we need to order more supplies: wine, vinegar, etc</li>
+                <li data-points="1">Dust outside area, surfaces, lamps, etc</li>
+                <li data-points="3"><strong>Deep Cleaning of Coffee Machine</strong>
+                    <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                        <li data-points="1">Remove all detachable parts (drip tray, water reservoir, filter basket)</li>
+                        <li data-points="1">Wash all removable parts with warm soapy water</li>
+                        <li data-points="1">Run descaling solution through the machine according to manufacturer instructions</li>
+                        <li data-points="1">Wipe down exterior surfaces with damp cloth</li>
+                        <li data-points="1">Clean coffee grinder if applicable</li>
+                        <li data-points="1">Run 2-3 cycles of clean water to rinse system completely</li>
+                    </ul>
+                </li>
+                <li data-points="1"><strong>Clean Cues</strong> - Use microfiber cloth:
+                    <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                        <li data-points="1">Take the cues</li>
+                        <li data-points="1">Fill designated box with warm tap water</li>
+                        <li data-points="1">Add a drop of Zalo and salmiakk to the water</li>
+                        <li data-points="1">Wet the cloth in the water and wipe the cues (focus on the front end of the cue)</li>
+                        <li data-points="1">Focus especially on cues with red chalk</li>
+                    </ul>
+                </li>
+                <li data-points="1"><strong>Vacuum Pool Tables</strong>
+                    <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                        <li data-points="1">Find the vacuum checklist in the binder</li>
+                        <li data-points="1">Tick off day/date and table number</li>
+                        <li data-points="1">All tables must be vacuumed during the week</li>
+                        <li data-points="1">Vacuum carefully around table edges</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <h3>Tuesday</h3>
+            <ul class="checklist">
+                <li data-points="1">Clean and update new QR-codes if needed for next day</li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <h3>Wednesday</h3>
+            <ul class="checklist">
+                <li data-points="1">Backbar: Wash and clean all glass bottles (old syrup bottles should be washed; newer ones are generally good)</li>
+                <li data-points="1"><strong>Brush Pool Tables</strong>
+                    <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                        <li data-points="1">Brushes are located by the balls</li>
+                        <li data-points="1">Use the correct brush for the correct table</li>
+                        <li data-points="1">Brush off chalk marks</li>
+                        <li data-points="1">Extra focus on yellow tables</li>
+                    </ul>
+                </li>
+                <li data-points="1">Clean ball trays in washing machine</li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <h3>Thursday</h3>
+            <ul class="checklist">
+                <li data-points="1">Brass/Metal: Wash and polish brass items, measuring tools, and tap cloths</li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <h3>Friday</h3>
+            <ul class="checklist">
+                <li data-points="1">Prep for the evening: Stock Station 2 thoroughly</li>
+                <li data-points="1">Stock Redroom/Blackroom and Station 2</li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <h3>Saturday</h3>
+            <ul class="checklist">
+                <li data-points="1">Prep for the evening: Stock Red Room and Station 2</li>
+                <li data-points="1">Prep spirits and fill bottles as needed</li>
+            </ul>
+
+            <div class="note">
+                <strong>WEEKEND NOTE:</strong> Candle routines differ on weekends. Discuss specific weekend procedures with management.
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3>Sunday</h3>
+            <ul class="checklist">
+                <li data-points="1">Deep clean the bar: Wash all glasses and shelves</li>
+                <li data-points="1">Clean all small drink bottles</li>
+                <li data-points="1">Track down any spillages and clean thoroughly</li>
+                <li data-points="1">Wash billiard equipment: chalk holders, cue racks, ball holders (can use dishwasher)</li>
+                <li data-points="1"><strong>Dry the fruits</strong>
+                    <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                        <li data-points="1">Cut the fruits in slices, in doubt how to cut them, check the garnish box</li>
+                        <li data-points="1">Use provided machine (placed in staff storage)</li>
+                    </ul>
+                </li>
+                <li data-points="1"><strong>Clean Plant Leaves</strong>
+                    <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                        <li data-points="1">Fill spray bottle with lukewarm water</li>
+                        <li data-points="1">Bring a cloth</li>
+                        <li data-points="1">Spray leaves thoroughly</li>
+                        <li data-points="1">Wipe excess water from leaves</li>
+                        <li data-points="1">Tick off plant cleaning on checklist</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="alert critical">
+                <div class="alert-title">Important</div>
+                <p>Do NOT water the plants</p>
+            </div>
+        </div>
+
+        <button class="back-to-top">← Back to Menu</button>
+    </div>
+
+    <div id="guest-service" class="content-section">
+        <button class="back-to-top">← Back to Menu</button>
+        
+        <div class="section-header">
+            <h2>Guest Service Excellence</h2>
+            <p>Creating memorable experiences for every guest</p>
+        </div>
+
+        <div class="subsection">
+            <h3>The Fundamentals of Great Service</h3>
+            
+            <h4>First Impressions</h4>
+            <ul class="checklist">
+                <li data-points="1">Greet guests within 30 seconds of their arrival at the bar</li>
+                <li data-points="1">Make eye contact and smile genuinely</li>
+                <li data-points="1">Use welcoming language: "Hi! What can I get started for you?" or "Welcome to Cue!"</li>
+                <li data-points="1">If busy, acknowledge them: "I'll be right with you!" with a smile</li>
+            </ul>
+
+            <h4>Active Listening</h4>
+            <ul class="checklist">
+                <li data-points="1">Give guests your full attention when taking orders</li>
+                <li data-points="1">Repeat the order back to confirm: "So that's two beers and a gin & tonic?"</li>
+                <li data-points="1">Listen for preferences and remember regular customers' favorites</li>
+                <li data-points="1">Pay attention to body language - hesitation might mean they need help deciding</li>
+            </ul>
+
+            <h4>Positive Communication</h4>
+            <ul class="checklist">
+                <li data-points="1">Use positive language: "I can do that" instead of "That's not possible"</li>
+                <li data-points="1">Be enthusiastic about our products and venue</li>
+                <li data-points="1">Avoid negative or complaining talk about work, management, or customers</li>
+                <li data-points="1">Keep conversations professional but warm and friendly</li>
+            </ul>
+
+            <h4>Anticipating Needs</h4>
+            <ul class="checklist">
+                <li data-points="1">Check on guests after serving: "How is everything?" or "Can I get you anything else?"</li>
+                <li data-points="1">Notice when drinks are running low and offer refills</li>
+                <li data-points="1">Bring extra napkins, water, or ice without being asked</li>
+                <li data-points="1">Be attentive to pool players who might need chalk, cues, or triangle</li>
+            </ul>
+        </div>
+
+        <button class="back-to-top">← Back to Menu</button>
+    </div>
+
+    <div id="upselling" class="content-section">
+        <button class="back-to-top">← Back to Menu</button>
+        
+        <div class="section-header">
+            <h2>Upselling Techniques</h2>
+            <p>Helping guests discover better options while increasing revenue</p>
+        </div>
+
+        <div class="alert">
+            <div class="alert-title">The Golden Rule of Upselling</div>
+            <p>Never just take the order - engage and offer choices. Our premium products are excellent quality, and guests appreciate knowing their options.</p>
+        </div>
+
+        <div class="subsection">
+            <h3>Spirits & Cocktails</h3>
+            
+            <h4>Ask, Don't Assume</h4>
+            <p style="margin-bottom: 1rem;">Instead of automatically pouring house brands, create a conversation:</p>
+            
+            <div style="background: rgba(255, 51, 102, 0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <p><strong>Guest:</strong> "I'll have a gin and tonic."</p>
+                <p style="color: #ff0000;"><strong>❌ Wrong:</strong> [Silently pours house gin]</p>
+                <p style="color: var(--accent);"><strong>✅ Right:</strong> "Great choice! What kind of gin would you like? We have [mention 2-3 premium options] or our house gin."</p>
+            </div>
+
+            <h4>Recommend with Confidence</h4>
+            <p style="margin-bottom: 1rem;">When guests ask for suggestions, give specific recommendations:</p>
+            
+            <div style="background: rgba(255, 51, 102, 0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <p style="color: #ff0000;"><strong>❌ Wrong:</strong> "We have a lot of gins, anything is fine."</p>
+                <p style="color: var(--accent);"><strong>✅ Right:</strong> "I really like [specific gin] - it has a nice botanical flavor that works great in a G&T. Or if you prefer something smoother, [another option] is excellent."</p>
+            </div>
+
+            <h4>The Premium Cocktail Strategy</h4>
+            <ul class="checklist">
+                <li data-points="1">Present the full cocktail menu, including premium options</li>
+                <li data-points="1">Describe what makes certain cocktails special or unique</li>
+                <li data-points="1">Create curiosity: "Have you tried our [signature cocktail]? It's really popular."</li>
+            </ul>
+
+            <div class="note">
+                <strong>Psychology Tip:</strong> Having high-end cocktails on the menu makes regular cocktails feel more affordable by comparison.
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3>Beer & Wine</h3>
+            
+            <h4>Suggest Upgrades</h4>
+            <div style="background: rgba(255, 51, 102, 0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <p><strong>Guest:</strong> "Can I get a beer?"</p>
+                <p><strong>You:</strong> "Of course! We have [mention 2-3 options including a craft/premium option]. What sounds good to you?"</p>
+            </div>
+
+            <h4>Wine by the Glass vs. Bottle</h4>
+            <ul class="checklist">
+                <li data-points="1">If 2+ people order wine, suggest a bottle: "Would you like to share a bottle? It's better value."</li>
+                <li data-points="1">Describe wine character: "The red is full-bodied and smooth" instead of just listing names</li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <h3>Food & Snacks</h3>
+            
+            <h4>Suggest Food with Drinks</h4>
+            <ul class="checklist">
+                <li data-points="1">When taking drink orders: "Can I get you anything to snack on while you play?"</li>
+                <li data-points="1">Mention popular items: "Our [specific snack] goes really well with beer."</li>
+                <li data-points="1">For groups: "Would you like to share some [appetizer]?"</li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <h3>Round Upselling</h3>
+            
+            <h4>Timing is Everything</h4>
+            <ul class="checklist">
+                <li data-points="1">Check back when drinks are 3/4 finished: "Ready for another round?"</li>
+                <li data-points="1">For groups: "Can I get the next round started for everyone?"</li>
+                <li data-points="1">Suggest trying something different: "Want to try a different beer this time?"</li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <h3>Upselling Best Practices</h3>
+            <ul class="checklist">
+                <li data-points="1">Always be genuine - only recommend products you actually think are good</li>
+                <li data-points="1">Read the guest - if they seem budget-conscious, don't push expensive items</li>
+                <li data-points="1">Know your products - taste everything so you can speak authentically</li>
+                <li data-points="1">Use descriptive language that creates appetite appeal</li>
+                <li data-points="1">Never make guests feel bad for choosing house/cheaper options</li>
+                <li data-points="1">Accept "no" gracefully and move on - don't be pushy</li>
+                <li data-points="1">Make it about enhancing their experience, not just making more money</li>
+            </ul>
+        </div>
+
+        <button class="back-to-top">← Back to Menu</button>
+    </div>
+
+    <div id="difficult-situations" class="content-section">
+        <button class="back-to-top">← Back to Menu</button>
+        
+        <div class="section-header">
+            <h2>Handling Difficult Situations</h2>
+            <p>Staying calm, professional, and solution-focused</p>
+        </div>
+
+        <div class="subsection">
+            <h3>The LAST Framework</h3>
+            <p style="margin-bottom: 1rem;">Use this framework for any difficult situation:</p>
+            <ul class="checklist">
+                <li data-points="1"><strong>Listen</strong> - Let them speak without interrupting</li>
+                <li data-points="1"><strong>Apologize</strong> - Show empathy even if it's not your fault</li>
+                <li data-points="1"><strong>Solve</strong> - Offer a concrete solution</li>
+                <li data-points="1"><strong>Thank</strong> - Thank them for bringing it to your attention</li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <h3>Common Difficult Scenarios</h3>
+            
+            <h4>Scenario 1: Complaint About Wait Time</h4>
+            <div style="background: rgba(255, 51, 102, 0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                <p><strong>Guest:</strong> "I've been waiting 20 minutes for my drink!"</p>
+                <p style="color: #ff0000; margin-top: 0.5rem;"><strong>❌ Wrong:</strong> "We're busy, you can see that. You'll have to wait."</p>
+                <p style="color: var(--accent); margin-top: 0.5rem;"><strong>✅ Right:</strong> "I'm really sorry about the wait - we're slammed tonight. Let me get your drink made right now, and I'll add [small comp like chips] for the inconvenience. What were you ordering?"</p>
+            </div>
+
+            <h4>Scenario 2: Wrong Order</h4>
+            <div style="background: rgba(255, 51, 102, 0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                <p><strong>Guest:</strong> "This isn't what I ordered."</p>
+                <p style="color: #ff0000; margin-top: 0.5rem;"><strong>❌ Wrong:</strong> "That's what you said you wanted."</p>
+                <p style="color: var(--accent); margin-top: 0.5rem;"><strong>✅ Right:</strong> "I apologize for the mix-up. Let me make you exactly what you wanted right away. What should it be?"</p>
+            </div>
+
+            <div class="note">
+                <strong>Key Point:</strong> Never argue about who's right. Fix it quickly and move on.
+            </div>
+
+            <h4>Scenario 3: Quality Complaint</h4>
+            <div style="background: rgba(255, 51, 102, 0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                <p><strong>Guest:</strong> "This beer tastes off."</p>
+                <p style="color: #ff0000; margin-top: 0.5rem;"><strong>❌ Wrong:</strong> "No one else has complained. It's fine."</p>
+                <p style="color: var(--accent); margin-top: 0.5rem;"><strong>✅ Right:</strong> "I'm sorry it doesn't taste right to you. Let me get you a fresh one, or would you prefer to try something different? No charge for this one."</p>
+            </div>
+
+            <h4>Scenario 4: Pricing Dispute</h4>
+            <div style="background: rgba(255, 51, 102, 0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <p><strong>Guest:</strong> "This is way more expensive than I thought!"</p>
+                <p style="color: #ff0000; margin-top: 0.5rem;"><strong>❌ Wrong:</strong> "You should have asked before ordering."</p>
+                <p style="color: var(--accent); margin-top: 0.5rem;"><strong>✅ Right:</strong> "I understand - that's our premium [product]. I should have mentioned the price when you ordered. For next time, our house option is [lower price] if you'd prefer that."</p>
+            </div>
+
+            <div class="note">
+                <strong>Prevention:</strong> Always mention prices for premium products when taking orders to avoid this situation.
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3>Handling Intoxicated Guests</h3>
+            
+            <div class="alert critical">
+                <div class="alert-title">⚠️ Legal Responsibility</div>
+                <p>We have a legal duty not to serve intoxicated guests. When in doubt, refuse service. It's better to upset one guest than face legal consequences.</p>
+            </div>
+
+            <h4>Signs of Intoxication</h4>
+            <ul class="checklist">
+                <li data-points="1">Slurred speech or difficulty speaking</li>
+                <li data-points="1">Unsteady walking or balance problems</li>
+                <li data-points="1">Aggressive, loud, or inappropriate behavior</li>
+                <li data-points="1">Difficulty focusing eyes or maintaining eye contact</li>
+                <li data-points="1">Spilling drinks or fumbling with objects</li>
+            </ul>
+
+            <h4>How to Refuse Service</h4>
+            <ul class="checklist">
+                <li data-points="1">Be firm but polite: "I'm not able to serve you any more alcohol tonight."</li>
+                <li data-points="1">Don't argue or debate - state it once clearly and don't back down</li>
+                <li data-points="1">Offer alternatives: "I can get you water or a soft drink, or help arrange transportation home."</li>
+                <li data-points="1">Involve management or security immediately if they become confrontational</li>
+                <li data-points="1">Document the incident - note the time and situation</li>
+            </ul>
+
+            <h4>Phrasing Examples</h4>
+            <div style="background: var(--card-bg); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <p><strong>Polite Refusal:</strong> "I care about your safety, and I can't serve you any more alcohol tonight. Can I get you some water?"</p>
+                <p style="margin-top: 0.75rem;"><strong>Firm Refusal:</strong> "I've made my decision and it won't change. I'm happy to get you water or call you a taxi."</p>
+                <p style="margin-top: 0.75rem;"><strong>When They Argue:</strong> "I understand you're upset, but this is final. I need you to either have water or I'll need to ask you to leave."</p>
+            </div>
+
+            <div class="note">
+                <strong>Pro Tip:</strong> If people acting nice but they are drunk, tell them that you need to cut them because you want to keep them here, and our guards need to follow sjenkeloven, so they have water for now and let's see! For the Rooms go to Line right away!
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3>Handling Aggressive or Rude Guests</h3>
+            
+            <h4>Stay Calm and Professional</h4>
+            <ul class="checklist">
+                <li data-points="1">Never raise your voice or match their energy</li>
+                <li data-points="1">Keep your body language neutral and non-threatening</li>
+                <li data-points="1">Speak slowly and clearly in a calm tone</li>
+                <li data-points="1">Don't take it personally - they're upset about the situation, not you</li>
+            </ul>
+
+            <h4>De-escalation Techniques</h4>
+            <ul class="checklist">
+                <li data-points="1">Acknowledge their feelings: "I can see you're frustrated."</li>
+                <li data-points="1">Lower your voice - this often makes them lower theirs too</li>
+                <li data-points="1">Give them space - don't crowd them</li>
+                <li data-points="1">Focus on solutions: "Let's figure out how to fix this."</li>
+                <li data-points="1">If they won't calm down, get management or security immediately</li>
+            </ul>
+
+            <h4>When to Involve Others</h4>
+            <p style="margin-bottom: 1rem;">Get help immediately if:</p>
+            <ul class="checklist">
+                <li data-points="1">Guest becomes physically threatening or aggressive</li>
+                <li data-points="1">Situation is escalating despite your best efforts</li>
+                <li data-points="1">You feel unsafe or uncomfortable</li>
+                <li data-points="1">Guest is harassing other customers</li>
+                <li data-points="1">You've tried the LAST framework and it's not working</li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <h3>Payment Issues</h3>
+            
+            <h4>Declined Card</h4>
+            <div style="background: rgba(255, 51, 102, 0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                <p style="color: #ff0000;"><strong>❌ Wrong:</strong> "Your card was declined" [said loudly]</p>
+                <p style="color: var(--accent); margin-top: 0.5rem;"><strong>✅ Right:</strong> [Quietly] "The card reader isn't going through - do you have another card you'd like to try?"</p>
+            </div>
+
+            <h4>Can't Pay / "I'll Pay Later"</h4>
+            <ul class="checklist">
+                <li data-points="1">Stay calm and professional</li>
+                <li data-points="1">Explain politely: "I need payment before you leave."</li>
+                <li data-points="1">Offer solutions: "Can someone you're with cover it? Or we accept mobile payment apps."</li>
+                <li data-points="1">Get management immediately - don't let them leave</li>
+                <li data-points="1">Never chase someone who runs - note their description and inform management</li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <h3>General Conflict Resolution Tips</h3>
+            <ul class="checklist">
+                <li data-points="1">Choose your battles - sometimes letting small things go is worth it</li>
+                <li data-points="1">Never argue in front of other guests - take it to a private area if needed</li>
+                <li data-points="1">Empower yourself to offer small compensations (free drink, discount) within reason</li>
+                <li data-points="1">Document serious incidents in writing after they occur</li>
+                <li data-points="1">Debrief with team after difficult situations to learn and improve</li>
+                <li data-points="1">Remember: A great recovery can turn an unhappy guest into a loyal one</li>
+                <li data-points="1">Take care of yourself - difficult situations are stressful, talk about it with teammates</li>
+            </ul>
+
+            <div class="alert">
+                <div class="alert-title">💚 Safety First</div>
+                <p>ALWAYS put safety first. You are already our hero, so no need to prove it! &lt;3</p>
+            </div>
+        </div>
+
+        <button class="back-to-top">← Back to Menu</button>
+    </div>
+
+    <script>
+        // Scroll to section function for quick nav
+        function scrollToSection(sectionId) {
+            if (sectionId === 'top') {
+                window.scrollTo({top: 0, behavior: 'smooth'});
+                document.documentElement.scrollTop = 0;
+                document.body.scrollTop = 0;
+            } else {
+                const element = document.getElementById(sectionId);
+                if (element) {
+                    const navHeight = 60; // Fixed nav height
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - navHeight - 10;
+                    
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        }
+        
+        // Alias for compatibility
+        function goToSection(sectionId) {
+            scrollToSection(sectionId);
+        }
+        
+        // Back to menu functionality
+        function backToMenu() {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+            // Fallback for older browsers
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
+        }
+        
+        // Prevent scrolling issues on iOS
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fix for iOS Safari
+            const nav = document.querySelector('.quick-nav');
+            if (nav) {
+                // Prevent momentum scrolling from affecting position
+                nav.addEventListener('touchmove', function(e) {
+                    e.stopPropagation();
+                }, {passive: true});
+            }
+        });
+        
+        // Double-tap functionality for checkboxes
+        document.addEventListener('DOMContentLoaded', function() {
+            const allChecklistItems = document.querySelectorAll('.checklist li');
+            
+            // Track last tap time for double-tap detection
+            let lastTapTime = 0;
+            let lastTapElement = null;
+            
+            // Load saved checkboxes from localStorage
+            function loadCheckedItems() {
+                try {
+                    const savedChecks = localStorage.getItem('cueBarChecklist');
+                    if (savedChecks) {
+                        const checkedItems = JSON.parse(savedChecks);
+                        checkedItems.forEach(function(itemText) {
+                            allChecklistItems.forEach(function(item) {
+                                if (item.textContent.trim() === itemText) {
+                                    item.classList.add('checked');
+                                }
+                            });
+                        });
+                    }
+                } catch (e) {
+                    // If localStorage is not available, checkboxes will still work for the session
+                    console.log('localStorage not available');
+                }
+            }
+            
+            // Save checked items to localStorage
+            function saveCheckedItems() {
+                try {
+                    const checkedItems = [];
+                    document.querySelectorAll('.checklist li.checked').forEach(function(item) {
+                        checkedItems.push(item.textContent.trim());
+                    });
+                    localStorage.setItem('cueBarChecklist', JSON.stringify(checkedItems));
+                } catch (e) {
+                    console.log('localStorage not available');
+                }
+            }
+            
+            // Double-tap handler
+            function handleDoubleTap(item) {
+                const currentTime = new Date().getTime();
+                const tapTimeDiff = currentTime - lastTapTime;
+                
+                if (tapTimeDiff < 400 && tapTimeDiff > 0 && lastTapElement === item) {
+                    // Double tap detected!
+                    const wasChecked = item.classList.contains('checked');
+                    item.classList.toggle('checked');
+                    
+                    // Award pet points when checking (use data-points or default to 1)
+                    if (!wasChecked && item.classList.contains('checked')) {
+                        if (typeof petSystem !== 'undefined') {
+                            const points = parseInt(item.getAttribute('data-points')) || 1;
+                            petSystem.addPoints(points);
+                        }
+                    }
+                    
+                    saveCheckedItems();
+                    lastTapTime = 0; // Reset
+                } else {
+                    // First tap
+                    lastTapTime = currentTime;
+                    lastTapElement = item;
+                }
+            }
+            
+            // Add double-tap event to all checklist items
+            allChecklistItems.forEach(function(item) {
+                // For touch devices (mobile)
+                item.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    handleDoubleTap(this);
+                });
+                
+                // For desktop - use double-click
+                item.addEventListener('dblclick', function(e) {
+                    e.preventDefault();
+                    const wasChecked = this.classList.contains('checked');
+                    this.classList.toggle('checked');
+                    
+                    // Award pet points when checking (use data-points or default to 1)
+                    if (!wasChecked && this.classList.contains('checked')) {
+                        if (typeof petSystem !== 'undefined') {
+                            const points = parseInt(this.getAttribute('data-points')) || 1;
+                            petSystem.addPoints(points);
+                        }
+                    }
+                    
+                    saveCheckedItems();
+                });
+            });
+            
+            // Add clear buttons to each section
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(function(section) {
+                const lastBackButton = section.querySelector('.back-to-top:last-of-type');
+                if (lastBackButton) {
+                    const clearBtn = document.createElement('button');
+                    clearBtn.textContent = '🗑️ Clear All Checks in This Section';
+                    clearBtn.className = 'clear-checks-btn';
+                    clearBtn.addEventListener('click', function() {
+                        const sectionItems = section.querySelectorAll('.checklist li');
+                        sectionItems.forEach(function(item) {
+                            item.classList.remove('checked');
+                        });
+                        saveCheckedItems();
+                    });
+                    lastBackButton.parentNode.insertBefore(clearBtn, lastBackButton);
+                    lastBackButton.parentNode.insertBefore(document.createTextNode(' '), lastBackButton);
+                }
+            });
+            
+            // Add a "Clear All" button at the top
+            const navContainer = document.querySelector('.nav-container');
+            if (navContainer) {
+                const clearAllDiv = document.createElement('div');
+                clearAllDiv.style.textAlign = 'center';
+                clearAllDiv.style.marginTop = '2rem';
+                clearAllDiv.innerHTML = '<button class="clear-checks-btn" onclick="clearAllChecks()">🗑️ Clear ALL Checkmarks</button><p style="color: var(--text-dim); margin-top: 1rem; font-size: 0.9rem;">💡 Tip: Double-tap any task to check it off!</p>';
+                navContainer.appendChild(clearAllDiv);
+            }
+            
+            // Make all back-to-top buttons work
+            const backButtons = document.querySelectorAll('.back-to-top');
+            backButtons.forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    backToMenu();
+                });
+                btn.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    backToMenu();
+                });
+            });
+            
+            // Load the saved state
+            loadCheckedItems();
+        });
+        
+        // Global function to clear all checks
+        function clearAllChecks() {
+            if (confirm('Are you sure you want to clear ALL checkmarks? This cannot be undone.')) {
+                document.querySelectorAll('.checklist li').forEach(function(item) {
+                    item.classList.remove('checked');
+                });
+                try {
+                    localStorage.removeItem('cueBarChecklist');
+                } catch (e) {
+                    console.log('localStorage not available');
+                }
+            }
+        }
+
+        // ==================== PET SYSTEM ====================
+        
+        const petSystem = {
+            currentPet: null,
+            taskPoints: 0,
+            gems: 0,
+            happiness: 50,
+            energy: 50,
+            stage: 'baby',
+            inventory: [],
+            equippedCostume: null,
+            equippedBackground: null,
+            equippedDecorations: [],
+            dailyTaskCount: 0,
+            lastTaskDate: null,
+            
+            stages: {
+                baby: { min: 0, max: 100, name: 'Baby' },
+                teen: { min: 100, max: 300, name: 'Teen' },
+                adult: { min: 300, max: 800, name: 'Adult' },
+                elder: { min: 800, max: 2000, name: 'Elder' },
+                master: { min: 2000, max: Infinity, name: 'Master' }
+            },
+            
+            load() {
+                try {
+                    const saved = localStorage.getItem('cuePetData');
+                    if (saved) {
+                        const data = JSON.parse(saved);
+                        Object.assign(this, data);
+                        
+                        // Backwards compatibility for new equipped properties
+                        if (!this.equippedDecorations) this.equippedDecorations = [];
+                        if (this.equippedCostume === undefined) this.equippedCostume = null;
+                        if (this.equippedBackground === undefined) this.equippedBackground = null;
+                        
+                        this.updateDisplay();
+                        
+                        if (this.currentPet) {
+                            document.getElementById('petSelection').style.display = 'none';
+                            document.getElementById('petDisplay').style.display = 'block';
+                            document.getElementById('petShop').style.display = 'block';
+                            this.drawPet();
+                        }
+                    }
+                } catch (e) {}
+            },
+            
+            save() {
+                try {
+                    localStorage.setItem('cuePetData', JSON.stringify({
+                        currentPet: this.currentPet,
+                        taskPoints: this.taskPoints,
+                        gems: this.gems,
+                        happiness: this.happiness,
+                        energy: this.energy,
+                        stage: this.stage,
+                        inventory: this.inventory,
+                        equippedCostume: this.equippedCostume,
+                        equippedBackground: this.equippedBackground,
+                        equippedDecorations: this.equippedDecorations,
+                        dailyTaskCount: this.dailyTaskCount,
+                        lastTaskDate: this.lastTaskDate
+                    }));
+                } catch (e) {}
+            },
+            
+            updateDisplay() {
+                document.getElementById('taskPoints').textContent = this.taskPoints;
+                document.getElementById('gems').textContent = this.gems;
+                document.getElementById('happiness').textContent = this.happiness;
+                document.getElementById('energy').textContent = this.energy;
+                
+                const pointsToNext = this.getNextStageThreshold();
+                const progress = pointsToNext > 0 ? (this.taskPoints / pointsToNext) * 100 : 100;
+                document.getElementById('pointsProgress').style.width = Math.min(progress, 100) + '%';
+                document.getElementById('happinessProgress').style.width = this.happiness + '%';
+                document.getElementById('energyProgress').style.width = this.energy + '%';
+                
+                this.updateStage();
+                document.getElementById('petStage').textContent = this.stages[this.stage].name + ' Stage';
+            },
+            
+            getNextStageThreshold() {
+                const stages = ['baby', 'teen', 'adult', 'elder', 'master'];
+                const idx = stages.indexOf(this.stage);
+                return idx < stages.length - 1 ? this.stages[stages[idx + 1]].min : this.taskPoints + 1000;
+            },
+            
+            updateStage() {
+                for (let name in this.stages) {
+                    const stage = this.stages[name];
+                    if (this.taskPoints >= stage.min && this.taskPoints < stage.max) {
+                        if (this.stage !== name) {
+                            this.stage = name;
+                            this.showNotification('🎉 Level Up! ' + stage.name + ' stage!');
+                        }
+                        break;
+                    }
+                }
+            },
+            
+            addPoints(points) {
+                // Check if we need to reset daily counter (new day)
+                const today = new Date().toDateString();
+                if (this.lastTaskDate !== today) {
+                    this.dailyTaskCount = 0;
+                    this.lastTaskDate = today;
+                }
+                
+                // Increment daily task counter
+                this.dailyTaskCount = (this.dailyTaskCount || 0) + 1;
+                
+                // Apply diminishing returns based on daily tasks completed
+                let multiplier = 1.0;
+                if (this.dailyTaskCount > 30) {
+                    multiplier = 0.25;  // After 30 tasks: 25% points
+                } else if (this.dailyTaskCount > 20) {
+                    multiplier = 0.5;   // After 20 tasks: 50% points
+                } else if (this.dailyTaskCount > 10) {
+                    multiplier = 0.75;  // After 10 tasks: 75% points
+                }
+                // First 10 tasks: 100% points
+                
+                const adjustedPoints = Math.ceil(points * multiplier);
+                this.taskPoints += adjustedPoints;
+                this.gems += Math.floor(adjustedPoints / 10);
+                
+                // Show notification if diminishing returns kicked in
+                if (multiplier < 1.0) {
+                    this.showNotification(`+${adjustedPoints} pts (${Math.round(multiplier*100)}% - ${this.dailyTaskCount} tasks today)`);
+                }
+                
+                this.updateDisplay();
+                this.save();
+            },
+            
+            drawPet() {
+                const canvas = document.getElementById('petCanvas');
+                if (!canvas || !this.currentPet) return;
+                
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, 128, 128);
+                
+                // Layer 1: Background
+                this.drawBackground(ctx);
+                
+                // Layer 2: Decorations
+                this.drawDecorations(ctx);
+                
+                // Layer 3: Pet
+                if (this.currentPet === 'cat') {
+                    this.drawCat(ctx);
+                } else if (this.currentPet === 'dog') {
+                    this.drawDog(ctx);
+                } else if (this.currentPet === 'bunny') {
+                    this.drawBunny(ctx);
+                } else if (this.currentPet === 'fish') {
+                    this.drawFish(ctx);
+                } else if (this.currentPet === 'bird') {
+                    this.drawBird(ctx);
+                } else if (this.currentPet === 'coffee') {
+                    this.drawCoffee(ctx);
+                } else if (this.currentPet === 'fox') {
+                    this.drawFox(ctx);
+                } else if (this.currentPet === 'bear') {
+                    this.drawBear(ctx);
+                } else if (this.currentPet === 'billiard') {
+                    this.drawBilliard(ctx);
+                } else if (this.currentPet === 'dragon') {
+                    this.drawDragon(ctx);
+                } else if (this.currentPet === 'unicorn') {
+                    this.drawUnicorn(ctx);
+                } else if (this.currentPet === 'beer') {
+                    this.drawBeer(ctx);
+                }
+                
+                // Layer 4: Costume (on top of pet)
+                this.drawCostume(ctx);
+            },
+            
+            drawBackground(ctx) {
+                if (!this.equippedBackground) {
+                    // Default gradient background
+                    const gradient = ctx.createLinearGradient(0, 0, 0, 128);
+                    gradient.addColorStop(0, '#1a1a1a');
+                    gradient.addColorStop(1, '#0a0a0a');
+                    ctx.fillStyle = gradient;
+                    ctx.fillRect(0, 0, 128, 128);
+                    return;
+                }
+                
+                // Draw themed backgrounds
+                switch(this.equippedBackground) {
+                    case 'beach':
+                        // Sky
+                        const skyGrad = ctx.createLinearGradient(0, 0, 0, 128);
+                        skyGrad.addColorStop(0, '#87CEEB');
+                        skyGrad.addColorStop(1, '#FFE4B5');
+                        ctx.fillStyle = skyGrad;
+                        ctx.fillRect(0, 0, 128, 128);
+                        // Sand
+                        ctx.fillStyle = '#F4A460';
+                        ctx.fillRect(0, 90, 128, 38);
+                        // Sun
+                        ctx.fillStyle = '#FFD700';
+                        ctx.beginPath();
+                        ctx.arc(100, 20, 15, 0, Math.PI * 2);
+                        ctx.fill();
+                        break;
+                    case 'castle':
+                        ctx.fillStyle = '#4B0082';
+                        ctx.fillRect(0, 0, 128, 128);
+                        ctx.fillStyle = '#696969';
+                        ctx.fillRect(10, 70, 30, 58);
+                        ctx.fillRect(88, 70, 30, 58);
+                        break;
+                    case 'space':
+                        ctx.fillStyle = '#000033';
+                        ctx.fillRect(0, 0, 128, 128);
+                        // Stars
+                        ctx.fillStyle = '#FFFFFF';
+                        for(let i = 0; i < 20; i++) {
+                            ctx.fillRect(Math.random()*128, Math.random()*128, 2, 2);
+                        }
+                        break;
+                    case 'forest':
+                        ctx.fillStyle = '#228B22';
+                        ctx.fillRect(0, 0, 128, 128);
+                        break;
+                    case 'billiard':
+                        ctx.fillStyle = '#006400';
+                        ctx.fillRect(0, 0, 128, 128);
+                        ctx.fillStyle = '#654321';
+                        ctx.fillRect(0, 0, 128, 15);
+                        ctx.fillRect(0, 113, 128, 15);
+                        break;
+                    case 'bar':
+                        ctx.fillStyle = '#8B4513';
+                        ctx.fillRect(0, 0, 128, 128);
+                        break;
+                }
+            },
+            
+            drawDecorations(ctx) {
+                this.equippedDecorations.forEach(item => {
+                    switch(item) {
+                        case 'couch':
+                            ctx.fillStyle = '#8B4513';
+                            ctx.fillRect(10, 95, 40, 25);
+                            ctx.fillStyle = '#A0522D';
+                            ctx.fillRect(12, 97, 36, 15);
+                            break;
+                        case 'lamp':
+                            ctx.fillStyle = '#FFD700';
+                            ctx.fillRect(100, 20, 3, 30);
+                            ctx.fillStyle = '#FFA500';
+                            ctx.fillRect(95, 15, 13, 8);
+                            break;
+                        case 'plant':
+                            ctx.fillStyle = '#8B4513';
+                            ctx.fillRect(105, 100, 10, 15);
+                            ctx.fillStyle = '#228B22';
+                            ctx.beginPath();
+                            ctx.arc(110, 95, 8, 0, Math.PI * 2);
+                            ctx.fill();
+                            break;
+                        case 'rug':
+                            ctx.fillStyle = '#8B0000';
+                            ctx.fillRect(35, 105, 60, 15);
+                            break;
+                        case 'bookshelf':
+                            ctx.fillStyle = '#654321';
+                            ctx.fillRect(5, 30, 25, 50);
+                            break;
+                        case 'tv':
+                            ctx.fillStyle = '#000000';
+                            ctx.fillRect(90, 25, 30, 20);
+                            ctx.fillStyle = '#4169E1';
+                            ctx.fillRect(92, 27, 26, 16);
+                            break;
+                        // Holiday decorations
+                        case 'xmas-tree':
+                            ctx.fillStyle = '#228B22';
+                            ctx.fillRect(100, 85, 20, 30);
+                            ctx.fillRect(95, 70, 30, 15);
+                            ctx.fillStyle = '#FFD700';
+                            ctx.fillRect(108, 65, 4, 5);
+                            break;
+                        case 'pumpkin':
+                            ctx.fillStyle = '#FF8C00';
+                            ctx.beginPath();
+                            ctx.arc(110, 105, 10, 0, Math.PI * 2);
+                            ctx.fill();
+                            ctx.fillStyle = '#228B22';
+                            ctx.fillRect(108, 95, 4, 5);
+                            break;
+                        case 'hearts':
+                            ctx.fillStyle = '#FF1493';
+                            ctx.fillRect(95, 25, 8, 8);
+                            ctx.fillRect(107, 25, 8, 8);
+                            break;
+                        case 'easter-egg':
+                            ctx.fillStyle = '#FF69B4';
+                            ctx.beginPath();
+                            ctx.arc(110, 100, 12, 0, Math.PI * 2);
+                            ctx.fill();
+                            ctx.fillStyle = '#FFFF00';
+                            ctx.fillRect(105, 100, 10, 2);
+                            break;
+                        case 'fireworks':
+                            ctx.fillStyle = '#FFD700';
+                            ctx.fillRect(100, 20, 2, 10);
+                            ctx.fillRect(95, 25, 2, 8);
+                            ctx.fillRect(105, 23, 2, 8);
+                            break;
+                    }
+                });
+            },
+            
+            drawCostume(ctx) {
+                if (!this.equippedCostume) return;
+                
+                switch(this.equippedCostume) {
+                    case 'tophat':
+                        // Top hat above pet
+                        ctx.fillStyle = '#000000';
+                        ctx.fillRect(42, 10, 24, 8);
+                        ctx.fillRect(48, 2, 12, 8);
+                        ctx.fillStyle = '#8B0000';
+                        ctx.fillRect(48, 8, 12, 2);
+                        break;
+                    case 'crown':
+                        // Gold crown
+                        ctx.fillStyle = '#FFD700';
+                        ctx.fillRect(42, 12, 24, 6);
+                        ctx.fillRect(44, 8, 4, 4);
+                        ctx.fillRect(52, 8, 4, 4);
+                        ctx.fillRect(60, 8, 4, 4);
+                        break;
+                    case 'sunglasses':
+                        // Cool sunglasses on face
+                        ctx.fillStyle = '#000000';
+                        ctx.fillRect(38, 35, 12, 6);
+                        ctx.fillRect(58, 35, 12, 6);
+                        ctx.fillRect(50, 37, 8, 2);
+                        break;
+                    case 'bowtie':
+                        // Bow tie
+                        ctx.fillStyle = '#FF1493';
+                        ctx.fillRect(48, 60, 6, 6);
+                        ctx.fillRect(58, 60, 6, 6);
+                        ctx.fillRect(54, 61, 4, 4);
+                        break;
+                    case 'scarf':
+                        // Scarf around neck
+                        ctx.fillStyle = '#FF6347';
+                        ctx.fillRect(40, 58, 28, 8);
+                        ctx.fillRect(36, 62, 8, 15);
+                        break;
+                    case 'cape':
+                        // Superhero cape
+                        ctx.fillStyle = '#DC143C';
+                        ctx.fillRect(30, 65, 8, 40);
+                        ctx.fillRect(70, 65, 8, 40);
+                        break;
+                    // Holiday costumes
+                    case 'santa-hat':
+                        ctx.fillStyle = '#FF0000';
+                        ctx.fillRect(42, 8, 24, 12);
+                        ctx.fillRect(48, 2, 12, 6);
+                        ctx.fillStyle = '#FFFFFF';
+                        ctx.fillRect(42, 18, 24, 3);
+                        break;
+                    case 'witch-hat':
+                        ctx.fillStyle = '#000000';
+                        ctx.fillRect(38, 12, 32, 3);
+                        ctx.fillRect(48, 2, 12, 10);
+                        break;
+                    case 'rose':
+                        ctx.fillStyle = '#FF1493';
+                        ctx.fillRect(46, 55, 6, 3);
+                        ctx.fillRect(48, 52, 2, 3);
+                        ctx.fillStyle = '#228B22';
+                        ctx.fillRect(49, 58, 2, 8);
+                        break;
+                    case 'bunny-ears':
+                        ctx.fillStyle = '#FFB6C1';
+                        ctx.fillRect(42, 5, 6, 15);
+                        ctx.fillRect(60, 5, 6, 15);
+                        break;
+                    case 'party-hat':
+                        ctx.fillStyle = '#FFD700';
+                        ctx.fillRect(42, 12, 24, 6);
+                        ctx.fillRect(48, 5, 12, 7);
+                        ctx.fillStyle = '#FF1493';
+                        ctx.fillRect(52, 2, 4, 3);
+                        break;
+                }
+            },
+            
+            drawCat(ctx) {
+                const pixels = [
+                    '................................',
+                    '......##............##..........',
+                    '.....#OO#..........#OO#.........',
+                    '....#OOOO#........#OOOO#........',
+                    '...#OOOOOO#......#OOOOOO#.......',
+                    '..#OO#BB#OO#....#OO#BB#OO#......',
+                    '..#OOBBBBOO####OOBBBBOO#........',
+                    '..#OOOOOOOOOOOOOOOOOO#..........',
+                    '..#OO#WWW#OO#OO#WWW#OO#.........',
+                    '..#OO#W0W#OO#OO#W0W#OO#.........',
+                    '..#OO#WWW#OO#OO#WWW#OO#.........',
+                    '..#OOOOOOOO#OO#OOOOOO#..........',
+                    '..#OOOO#PPPPPP#OOOO#............',
+                    '...#OOO#PP##PP#OOO#.............',
+                    '...#OOOO#0000#OOOO#.............',
+                    '....#OOOO####OOOO#..............',
+                    '....#OOO#....#OOO#..............',
+                    '...#OOOOO#..#OOOOO#.............',
+                    '...#YY#OOO##OOO#YY#.............',
+                    '..#YYYY#OO##OO#YYYY#............',
+                    '..#YYYYYOO##OOYYYY#.............',
+                    '..#YYYYYOOOOOOYYY#..............',
+                    '...#YYYYOOOOOOYYY#..............',
+                    '...#YY#YY#YY#YY#YY#.............',
+                    '.....#..#..#..#..#..............',
+                    '.....#..#..#..#..#..............',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................'
+                ];
+                
+                const colors = { 
+                    '#': '#654321', 'O': '#FF8C00', 'B': '#8B4513', 
+                    'W': '#FFFFFF', '0': '#000000', 'P': '#FFC0CB', 
+                    'Y': '#FFD700' 
+                };
+                for (let y = 0; y < 32; y++) {
+                    for (let x = 0; x < 32; x++) {
+                        const c = pixels[y][x];
+                        if (colors[c]) {
+                            ctx.fillStyle = colors[c];
+                            ctx.fillRect(x * 4, y * 4, 4, 4);
+                        }
+                    }
+                }
+            },
+            
+            drawDog(ctx) {
+                const pixels = [
+                    '................................',
+                    '....##..................##......',
+                    '...#BB#...............#BB#......',
+                    '..#BBBB#.............#BBBB#.....',
+                    '..#BBBBBB#.........#BBBBBB#.....',
+                    '..#BBBBBBB#.......#BBBBBBB#.....',
+                    '...#BBBBBBB#######BBBBBBB#......',
+                    '...#BBBBBBBBBBBBBBBBBBB#........',
+                    '....#BBB#WWW#BB#WWW#BB#.........',
+                    '....#BBB#W0W#BB#W0W#BB#.........',
+                    '....#BBB#WWW#BB#WWW#BB#.........',
+                    '....#BBBBBBBB#BBBBBBBB#.........',
+                    '.....#BBBB#0000000#BBB#.........',
+                    '.....#BBBB#00##00#BBB#..........',
+                    '......#BBBB#0000#BBB#...........',
+                    '......#BBBBB####BBBB#...........',
+                    '.....#BBBBBB#..#BBBB#...........',
+                    '.....#TTTTT#BB#TTTTT#...........',
+                    '....#TTTTTTT##TTTTTTT#..........',
+                    '....#TTTTTTTTTTTTTTTTT#.........',
+                    '....#TTTTTTTTTTTTTTTTT#.........',
+                    '.....#TTTTTTTTTTTTTTT#..........',
+                    '.....#TTT#TT#TT#TT#TT#..........',
+                    '.......#..#..#..#..#............',
+                    '.......#..#..#..#..#............',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................'
+                ];
+                
+                const colors = { 
+                    '#': '#654321', 'B': '#CD853F', 'W': '#FFFFFF', 
+                    '0': '#000000', 'T': '#F5DEB3' 
+                };
+                for (let y = 0; y < 32; y++) {
+                    for (let x = 0; x < 32; x++) {
+                        const c = pixels[y][x];
+                        if (colors[c]) {
+                            ctx.fillStyle = colors[c];
+                            ctx.fillRect(x * 4, y * 4, 4, 4);
+                        }
+                    }
+                }
+            },
+            
+            drawBunny(ctx) {
+                const pixels = [
+                    '................................',
+                    '......##............##..........',
+                    '.....#PP#..........#PP#.........',
+                    '....#PPPP#........#PPPP#........',
+                    '....#PPPPPP#....#PPPPPP#........',
+                    '....#PP#WW#PP##PP#WW#PP#........',
+                    '.....#PPWWWWPPPPWWWWPP#.........',
+                    '.....#PPPPPPPPPPPPPPPP#.........',
+                    '......#PP#00#PP#00#PP#..........',
+                    '......#PP#WW#PP#WW#PP#..........',
+                    '......#PPPPPPPPPPPPPP#..........',
+                    '......#PPPP#PPPP#PPPP#..........',
+                    '.......#PPPP#RR#PPPP#...........',
+                    '.......#PPPP#RR#PPPP#...........',
+                    '.......#PPPPPRRRPPPP#...........',
+                    '........#PPPP###PPPP#...........',
+                    '........#PPPPPPPPPP#............',
+                    '.......#PPPPPPPPPPPP#...........',
+                    '.......#WW#PPPP#PPWW#...........',
+                    '......#WWWW#PP#PWWWW#...........',
+                    '......#WWWWWW#WWWWWW#...........',
+                    '......#WWWWWWWWWWWWW#...........',
+                    '.......#WWWW##WWWW#.............',
+                    '.......#WW#..##WW#..............',
+                    '.........#....#.................',
+                    '.........#....#.................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................'
+                ];
+                
+                const colors = { 
+                    '#': '#999999', 'P': '#FFB6C1', 'W': '#FFFFFF', 
+                    '0': '#000000', 'R': '#FF69B4' 
+                };
+                for (let y = 0; y < 32; y++) {
+                    for (let x = 0; x < 32; x++) {
+                        const c = pixels[y][x];
+                        if (colors[c]) {
+                            ctx.fillStyle = colors[c];
+                            ctx.fillRect(x * 4, y * 4, 4, 4);
+                        }
+                    }
+                }
+            },
+            
+            drawFish(ctx) {
+                const pixels = [
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '..........########..............',
+                    '........##FFFFFFFF##............',
+                    '......##FFFFFFFFFFFF##..........',
+                    '.....#FFFFFFFFFFFFFF#...........',
+                    '....#FF#00#FFFFFFFFF##..........',
+                    '...#FFF#WW#FFFFFFFFF#SS#........',
+                    '...#FFFF##FFFFFFFFFF#SSSS#......',
+                    '...#FFFFFFFFFFFFFFFFSSSSS#......',
+                    '...#FFFFFFFFFFFFFFFFSSSSS#......',
+                    '...#FFFFFFFFFFFFFFFFSSSS#.......',
+                    '....#FFFFFFFFFFFFFFFSSS#........',
+                    '.....#FFFFFFFFFFFFFF##..........',
+                    '......##FFFFFFFFFF##............',
+                    '........##FFFFFF##..............',
+                    '..........######................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................'
+                ];
+                
+                const colors = { 
+                    '#': '#FF6347', 'F': '#FF8C69', 'W': '#FFFFFF', 
+                    '0': '#000000', 'S': '#FFB6C1'
+                };
+                for (let y = 0; y < 32; y++) {
+                    for (let x = 0; x < 32; x++) {
+                        const c = pixels[y][x];
+                        if (colors[c]) {
+                            ctx.fillStyle = colors[c];
+                            ctx.fillRect(x * 4, y * 4, 4, 4);
+                        }
+                    }
+                }
+            },
+            
+            drawBird(ctx) {
+                const pixels = [
+                    '................................',
+                    '................................',
+                    '................................',
+                    '.........#####..................',
+                    '........#YYYYY#.................',
+                    '.......#YYYYYYY#................',
+                    '......#YY#00#YYY#...............',
+                    '.....#YYY####YYYY#..............',
+                    '....#YYYYYYYYYYYY#..............',
+                    '...#YYYYYYYYYYYYY#..............',
+                    '...#YYYYYY##YYYYY#..............',
+                    '...#YYYY##RR##YYY#..............',
+                    '....#YYY#RRRR#YY#...............',
+                    '.....#YY##RR##Y#................',
+                    '......#YYY##YY#.................',
+                    '.......#YYYYY#..................',
+                    '........#YYY#...................',
+                    '.........###....................',
+                    '........#...#...................',
+                    '.......#.....#..................',
+                    '......#.......#.................',
+                    '......#.......#.................',
+                    '......##.....##.................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................'
+                ];
+                
+                const colors = { 
+                    '#': '#8B4513', 'Y': '#FFD700', 'R': '#FF4500', 
+                    '0': '#000000'
+                };
+                for (let y = 0; y < 32; y++) {
+                    for (let x = 0; x < 32; x++) {
+                        const c = pixels[y][x];
+                        if (colors[c]) {
+                            ctx.fillStyle = colors[c];
+                            ctx.fillRect(x * 4, y * 4, 4, 4);
+                        }
+                    }
+                }
+            },
+            
+            drawCoffee(ctx) {
+                const pixels = [
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '........########................',
+                    '.......#BBBBBBBB#...............',
+                    '......#BBBBBBBBBB#..............',
+                    '.....#BBBBBBBBBBBB#.............',
+                    '.....#BB##....##BB#.............',
+                    '.....#BB#.0000.#BB#.............',
+                    '.....#BB#.0##0.#BB#.............',
+                    '.....#BB#..00..#BB#.............',
+                    '.....#BB##....##BB#.............',
+                    '.....#BBBBBBBBBBBB#.............',
+                    '.....#BBBBBBBBBBBB#.............',
+                    '.....#CCCCCCCCCCCC#.............',
+                    '.....#CCCCCCCCCCCC#.............',
+                    '......#CCCCCCCCCC#..............',
+                    '.......#CCCCCCCC#...............',
+                    '........########................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................'
+                ];
+                
+                const colors = { 
+                    '#': '#654321', 'B': '#F5DEB3', 'C': '#8B4513',
+                    '0': '#000000'
+                };
+                for (let y = 0; y < 32; y++) {
+                    for (let x = 0; x < 32; x++) {
+                        const c = pixels[y][x];
+                        if (colors[c]) {
+                            ctx.fillStyle = colors[c];
+                            ctx.fillRect(x * 4, y * 4, 4, 4);
+                        }
+                    }
+                }
+            },
+            
+            drawFox(ctx) {
+                const pixels = [
+                    '................................',
+                    '......##............##..........',
+                    '.....#OO#..........#OO#.........',
+                    '....#OOOO#........#OOOO#........',
+                    '...#OOOOOO#......#OOOOOO#.......',
+                    '..#OOOOOOOO#....#OOOOOOOO#......',
+                    '..#OO#WW#OO####OO#WW#OO#........',
+                    '..#OOO##OOO####OOO##OOO#........',
+                    '...#OO#00#OO##OO#00#OO#.........',
+                    '...#OOOOOOOO##OOOOOOOO#.........',
+                    '...#OOOOOO#BB#OOOOOO#...........',
+                    '....#OOOO#BBBB#OOOO#............',
+                    '.....#OOO#BB#OOO#...............',
+                    '......#OOOO#OOOO#...............',
+                    '.......#OOOOOO#.................',
+                    '........#OOOO#..................',
+                    '.......#WWWWWW#.................',
+                    '......#WWWWWWWW#................',
+                    '.....#WW#WWWW#WW#...............',
+                    '....#WWW#WWWW#WWW#..............',
+                    '....#WWWWWWWWWWWW#..............',
+                    '.....#WWWWWWWWWW#...............',
+                    '.....#WW#WW##WW#WW#.............',
+                    '.......#..#..#..#...............',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................'
+                ];
+                
+                const colors = { 
+                    '#': '#8B4513', 'O': '#FF6347', 'W': '#FFFFFF', 
+                    '0': '#000000', 'B': '#000000'
+                };
+                for (let y = 0; y < 32; y++) {
+                    for (let x = 0; x < 32; x++) {
+                        const c = pixels[y][x];
+                        if (colors[c]) {
+                            ctx.fillStyle = colors[c];
+                            ctx.fillRect(x * 4, y * 4, 4, 4);
+                        }
+                    }
+                }
+            },
+            
+            drawBear(ctx) {
+                const pixels = [
+                    '................................',
+                    '....####............####........',
+                    '...######..........######.......',
+                    '..########........########......',
+                    '..#BBBBBB#........#BBBBBB#......',
+                    '..#BBBBBBBB####BBBBBBBB#........',
+                    '...#BBBBBBBBBBBBBBBBBB#.........',
+                    '...#BBBB#00#BB#00#BBBB#.........',
+                    '...#BBBB####BB####BBBB#.........',
+                    '....#BBBBBBBBBBBBBBBB#..........',
+                    '....#BBBB#0000#BBBB#............',
+                    '.....#BBBB####BBBB#.............',
+                    '......#BBBBBBBBBB#..............',
+                    '.......#BBBBBBBB#...............',
+                    '........#BBBBBB#................',
+                    '.........#BBBB#.................',
+                    '........#BBBBBB#................',
+                    '.......#BBBBBBBB#...............',
+                    '......#BBBBBBBBBB#..............',
+                    '.....#BBBB#BB#BBBB#.............',
+                    '....#BBBB#.BB.#BBBB#............',
+                    '....#BBB#..BB..#BBB#............',
+                    '.....###...##...###.............',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................'
+                ];
+                
+                const colors = { 
+                    '#': '#654321', 'B': '#8B4513', '0': '#000000'
+                };
+                for (let y = 0; y < 32; y++) {
+                    for (let x = 0; x < 32; x++) {
+                        const c = pixels[y][x];
+                        if (colors[c]) {
+                            ctx.fillStyle = colors[c];
+                            ctx.fillRect(x * 4, y * 4, 4, 4);
+                        }
+                    }
+                }
+            },
+            
+            drawBilliard(ctx) {
+                const pixels = [
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '........##########..............',
+                    '.......############.............',
+                    '......##############............',
+                    '.....################...........',
+                    '.....########00######...........',
+                    '....########0880######..........',
+                    '....########0880######..........',
+                    '....#########00#######..........',
+                    '....##################..........',
+                    '....##################..........',
+                    '....##################..........',
+                    '....##################..........',
+                    '....##################..........',
+                    '....##################..........',
+                    '.....################...........',
+                    '.....################...........',
+                    '......##############............',
+                    '.......############.............',
+                    '........##########..............',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................'
+                ];
+                
+                const colors = { 
+                    '#': '#000000', '0': '#FFFFFF', '8': '#FF0000'
+                };
+                for (let y = 0; y < 32; y++) {
+                    for (let x = 0; x < 32; x++) {
+                        const c = pixels[y][x];
+                        if (colors[c]) {
+                            ctx.fillStyle = colors[c];
+                            ctx.fillRect(x * 4, y * 4, 4, 4);
+                        }
+                    }
+                }
+            },
+            
+            drawDragon(ctx) {
+                const pixels = [
+                    '................................',
+                    '.........##.....................',
+                    '........#RR#....................',
+                    '.......#RRRR#...................',
+                    '......#RRRRRR#..................',
+                    '......#RR##RR#..................',
+                    '.....#RR#00#RR#.................',
+                    '.....#RR####RR#.................',
+                    '....#RRRRRRRRRR#................',
+                    '....#RRRRRRRRRR#................',
+                    '...#RRRR#FF#RRRR#...............',
+                    '...#RRRR#FF#RRRR#...............',
+                    '...#RRRRR##RRRRR#...............',
+                    '....#RRRRRRRRR#.................',
+                    '.....#RRRRRRR#..................',
+                    '......#RRRRR#...................',
+                    '.....#GG#RR#GG#.................',
+                    '....#GGGG#R#GGGG#...............',
+                    '...#GGGGGGGGGGGGG#..............',
+                    '...#GGGG#GGG#GGGG#..............',
+                    '....#GGG#GGG#GGG#...............',
+                    '.....#GG#...#GG#................',
+                    '......##.....##.................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................'
+                ];
+                
+                const colors = { 
+                    '#': '#654321', 'R': '#DC143C', 'G': '#228B22',
+                    '0': '#000000', 'F': '#FF4500'
+                };
+                for (let y = 0; y < 32; y++) {
+                    for (let x = 0; x < 32; x++) {
+                        const c = pixels[y][x];
+                        if (colors[c]) {
+                            ctx.fillStyle = colors[c];
+                            ctx.fillRect(x * 4, y * 4, 4, 4);
+                        }
+                    }
+                }
+            },
+            
+            drawUnicorn(ctx) {
+                const pixels = [
+                    '................................',
+                    '............##..................',
+                    '...........#YG#.................',
+                    '..........#YYGG#................',
+                    '.........#YYYGG#................',
+                    '........#WW##GG#................',
+                    '.......#WWWW#GG#................',
+                    '......#WW#PP#WW#................',
+                    '.....#WWW####WWW#...............',
+                    '....#WW#00#WW#00#W#.............',
+                    '....#WWW##WWWW##WW#.............',
+                    '....#WWWWWWWWWWWWW#.............',
+                    '.....#WWWWWWWWWWW#..............',
+                    '......#WWWW##WWW#...............',
+                    '.......#WWW##WW#................',
+                    '........#WWWWW#.................',
+                    '.........#WWW#..................',
+                    '.........#WWW#..................',
+                    '........#WWWWW#.................',
+                    '.......#WW#WW#WW#...............',
+                    '......#WWW#WW#WWW#..............',
+                    '......#WW#.WW.#WW#..............',
+                    '.......##..##..##...............',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................'
+                ];
+                
+                const colors = { 
+                    '#': '#C0C0C0', 'W': '#FFFFFF', 'Y': '#FFD700',
+                    'G': '#FF69B4', 'P': '#FFB6C1', '0': '#000000'
+                };
+                for (let y = 0; y < 32; y++) {
+                    for (let x = 0; x < 32; x++) {
+                        const c = pixels[y][x];
+                        if (colors[c]) {
+                            ctx.fillStyle = colors[c];
+                            ctx.fillRect(x * 4, y * 4, 4, 4);
+                        }
+                    }
+                }
+            },
+            
+            drawBeer(ctx) {
+                const pixels = [
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '.......########.................',
+                    '......##YYYYYY##................',
+                    '.....##YYYYYYYY##...............',
+                    '.....#YYYYYYYYYY#...............',
+                    '....#YYWWWWWWWWYY#..............',
+                    '....#YWWWWWWWWWWY#..............',
+                    '....#YWWWWWWWWWWY#..............',
+                    '....#YWWWWWWWWWWY#..............',
+                    '....#YYWWWWWWWWYY#..............',
+                    '....#YYYYYYYYYYYY#..............',
+                    '....#YYYYYYYYYYYY#..............',
+                    '....#YYYYYYYYYYYY#..............',
+                    '....#YYYYYYYYYYYY#..............',
+                    '....#YYYYYYYYYYYY#..............',
+                    '....#YYYYYYYYYYYY#..............',
+                    '....#YYYYYYYYYYYY#..............',
+                    '.....#YYYYYYYYYY#...............',
+                    '.....##YYYYYYYY##...............',
+                    '......##YYYYYY##................',
+                    '.......########.................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................',
+                    '................................'
+                ];
+                
+                const colors = { 
+                    '#': '#8B4513', 'Y': '#FFD700', 'W': '#FFFACD'
+                };
+                for (let y = 0; y < 32; y++) {
+                    for (let x = 0; x < 32; x++) {
+                        const c = pixels[y][x];
+                        if (colors[c]) {
+                            ctx.fillStyle = colors[c];
+                            ctx.fillRect(x * 4, y * 4, 4, 4);
+                        }
+                    }
+                }
+            },
+            
+            showNotification(msg) {
+                const toast = document.createElement('div');
+                toast.style.cssText = `
+                    position: fixed;
+                    top: 80px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: linear-gradient(135deg, #ff6b9d, #c06c84);
+                    color: white;
+                    padding: 1rem 2rem;
+                    border-radius: 25px;
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    z-index: 10000;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+                    animation: slideDown 0.3s ease-out;
+                `;
+                toast.textContent = msg;
+                document.body.appendChild(toast);
+                setTimeout(() => {
+                    toast.style.animation = 'slideUp 0.3s ease-in';
+                    setTimeout(() => toast.remove(), 300);
+                }, 2500);
+            }
+        };
+        
+        function selectPet(type, name) {
+            petSystem.currentPet = type;
+            document.getElementById('petSelection').style.display = 'none';
+            document.getElementById('petDisplay').style.display = 'block';
+            document.getElementById('petShop').style.display = 'block';
+            
+            const input = document.getElementById('petNameInput');
+            input.value = name;
+            document.getElementById('petName').textContent = name;
+            input.addEventListener('input', function() {
+                document.getElementById('petName').textContent = this.value || name;
+            });
+            
+            petSystem.drawPet();
+            petSystem.save();
+            showShopCategory('decorations', document.querySelector('.category-btn'));
+            petSystem.showNotification('🎉 Welcome, ' + name + '!');
+        }
+        
+        function feedPet() {
+            if (petSystem.taskPoints >= 5) {
+                petSystem.taskPoints -= 5;
+                petSystem.happiness = Math.min(100, petSystem.happiness + 10);
+                petSystem.updateDisplay();
+                petSystem.save();
+                petSystem.showNotification('🍖 Your pet is happy!');
+            } else {
+                petSystem.showNotification('❌ Need 5 points!');
+            }
+        }
+        
+        function playWithPet() {
+            if (petSystem.taskPoints >= 10) {
+                petSystem.taskPoints -= 10;
+                petSystem.energy = Math.min(100, petSystem.energy + 15);
+                petSystem.happiness = Math.min(100, petSystem.happiness + 5);
+                petSystem.updateDisplay();
+                petSystem.save();
+                petSystem.showNotification('🎾 Fun playtime!');
+            } else {
+                petSystem.showNotification('❌ Need 10 points!');
+            }
+        }
+        
+        function washPet() {
+            if (petSystem.taskPoints >= 5) {
+                petSystem.taskPoints -= 5;
+                petSystem.happiness = Math.min(100, petSystem.happiness + 8);
+                petSystem.updateDisplay();
+                petSystem.save();
+                petSystem.showNotification('🛁 Clean and fresh!');
+            } else {
+                petSystem.showNotification('❌ Need 5 points!');
+            }
+        }
+        
+        function giveGift() {
+            if (petSystem.taskPoints >= 20) {
+                petSystem.taskPoints -= 20;
+                petSystem.happiness = Math.min(100, petSystem.happiness + 25);
+                petSystem.energy = Math.min(100, petSystem.energy + 10);
+                petSystem.updateDisplay();
+                petSystem.save();
+                petSystem.showNotification('🎁 Your pet LOVES it! ❤️');
+            } else {
+                petSystem.showNotification('❌ Need 20 points!');
+            }
+        }
+        
+        const shopData = {
+            decorations: [
+                { id: 'couch', name: '🛋️ Couch', price: 15, type: 'points' },
+                { id: 'lamp', name: '💡 Lamp', price: 10, type: 'points' },
+                { id: 'plant', name: '🪴 Plant', price: 8, type: 'points' },
+                { id: 'rug', name: '🟫 Rug', price: 12, type: 'points' },
+                { id: 'bookshelf', name: '📚 Bookshelf', price: 20, type: 'points' },
+                { id: 'tv', name: '📺 TV', price: 25, type: 'points' }
+            ],
+            costumes: [
+                { id: 'tophat', name: '🎩 Top Hat', price: 1, type: 'gems' },
+                { id: 'crown', name: '👑 Crown', price: 2, type: 'gems' },
+                { id: 'sunglasses', name: '😎 Sunglasses', price: 1, type: 'gems' },
+                { id: 'bowtie', name: '🎀 Bow Tie', price: 1, type: 'gems' },
+                { id: 'scarf', name: '🧣 Scarf', price: 1, type: 'gems' },
+                { id: 'cape', name: '🦸 Cape', price: 2, type: 'gems' }
+            ],
+            backgrounds: [
+                { id: 'beach', name: '🏖️ Beach', price: 50, type: 'points' },
+                { id: 'castle', name: '🏰 Castle', price: 150, type: 'points' },
+                { id: 'space', name: '🌌 Space', price: 300, type: 'points' },
+                { id: 'forest', name: '🌲 Forest', price: 40, type: 'points' },
+                { id: 'billiard', name: '🎱 Billiard Hall', price: 100, type: 'points' },
+                { id: 'bar', name: '🍺 Bar', price: 80, type: 'points' }
+            ]
+        };
+        
+        // Holiday decorations system
+        function getHolidayItems() {
+            const now = new Date();
+            const month = now.getMonth() + 1; // 1-12
+            const day = now.getDate();
+            
+            const holidays = [];
+            
+            // Christmas (December)
+            if (month === 12) {
+                holidays.push(
+                    { id: 'xmas-tree', name: '🎄 Christmas Tree', price: 30, type: 'points', holiday: true },
+                    { id: 'santa-hat', name: '🎅 Santa Hat', price: 1, type: 'gems', holiday: true, category: 'costumes' }
+                );
+            }
+            
+            // Halloween (October)
+            if (month === 10) {
+                holidays.push(
+                    { id: 'pumpkin', name: '🎃 Pumpkin', price: 15, type: 'points', holiday: true },
+                    { id: 'witch-hat', name: '🧙 Witch Hat', price: 1, type: 'gems', holiday: true, category: 'costumes' }
+                );
+            }
+            
+            // Valentine's (February)
+            if (month === 2 && day <= 14) {
+                holidays.push(
+                    { id: 'hearts', name: '💕 Hearts', price: 10, type: 'points', holiday: true },
+                    { id: 'rose', name: '🌹 Rose', price: 1, type: 'gems', holiday: true, category: 'costumes' }
+                );
+            }
+            
+            // Easter (March-April)
+            if (month === 3 || month === 4) {
+                holidays.push(
+                    { id: 'easter-egg', name: '🥚 Easter Egg', price: 12, type: 'points', holiday: true },
+                    { id: 'bunny-ears', name: '🐰 Bunny Ears', price: 1, type: 'gems', holiday: true, category: 'costumes' }
+                );
+            }
+            
+            // New Year (January)
+            if (month === 1 && day <= 7) {
+                holidays.push(
+                    { id: 'fireworks', name: '🎆 Fireworks', price: 20, type: 'points', holiday: true },
+                    { id: 'party-hat', name: '🎉 Party Hat', price: 1, type: 'gems', holiday: true, category: 'costumes' }
+                );
+            }
+            
+            return holidays;
+        }
+        
+        let currentShopCategory = 'decorations';
+        
+        function showShopCategory(cat, btn) {
+            currentShopCategory = cat;
+            
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            
+            let items = [...shopData[cat]];
+            
+            // Add holiday items for current category
+            const holidayItems = getHolidayItems();
+            holidayItems.forEach(hItem => {
+                if (cat === 'decorations' && !hItem.category) {
+                    items.push(hItem);
+                } else if (cat === 'costumes' && hItem.category === 'costumes') {
+                    items.push(hItem);
+                }
+            });
+            
+            const container = document.getElementById('shopItems');
+            container.innerHTML = '';
+            
+            items.forEach(item => {
+                const owned = petSystem.inventory.includes(item.id);
+                const canAfford = item.type === 'points' ? petSystem.taskPoints >= item.price : petSystem.gems >= item.price;
+                
+                // Check if item is equipped
+                let isEquipped = false;
+                if (cat === 'costumes') {
+                    isEquipped = petSystem.equippedCostume === item.id;
+                } else if (cat === 'backgrounds') {
+                    isEquipped = petSystem.equippedBackground === item.id;
+                } else if (cat === 'decorations') {
+                    isEquipped = petSystem.equippedDecorations.includes(item.id);
+                }
+                
+                const div = document.createElement('div');
+                div.className = 'shop-item' + (owned ? ' owned' : '');
+                
+                let statusText = '';
+                if (owned) {
+                    if (isEquipped) {
+                        statusText = '<button class="equip-btn equipped" onclick="unequipItem(\'' + item.id + '\', \'' + cat + '\')">✅ Equipped - Tap to remove</button>';
+                    } else {
+                        statusText = '<button class="equip-btn" onclick="equipItem(\'' + item.id + '\', \'' + cat + '\')">👕 Tap to Equip</button>';
+                    }
+                } else {
+                    statusText = '<div class="shop-item-price">' + (item.type === 'points' ? '⭐ ' + item.price : '💎 ' + item.price) + '</div>';
+                }
+                
+                div.innerHTML = `
+                    <div class="shop-item-icon">${item.name.split(' ')[0]}</div>
+                    <div class="shop-item-name">${item.name.split(' ').slice(1).join(' ')}</div>
+                    ${statusText}
+                `;
+                
+                if (!owned) {
+                    div.onclick = () => buyItem(item);
+                    if (!canAfford) div.style.opacity = '0.5';
+                }
+                
+                container.appendChild(div);
+            });
+        }
+        
+        function buyItem(item) {
+            if (petSystem.inventory.includes(item.id)) {
+                petSystem.showNotification('✅ Already owned!');
+                return;
+            }
+            
+            const canAfford = item.type === 'points' ? petSystem.taskPoints >= item.price : petSystem.gems >= item.price;
+            if (!canAfford) {
+                petSystem.showNotification('❌ Not enough ' + (item.type === 'points' ? 'points' : 'gems') + '!');
+                return;
+            }
+            
+            if (item.type === 'points') petSystem.taskPoints -= item.price;
+            else petSystem.gems -= item.price;
+            
+            petSystem.inventory.push(item.id);
+            petSystem.happiness = Math.min(100, petSystem.happiness + 5);
+            
+            // Auto-equip newly purchased item
+            if (currentShopCategory === 'costumes') {
+                petSystem.equippedCostume = item.id;
+            } else if (currentShopCategory === 'backgrounds') {
+                petSystem.equippedBackground = item.id;
+            } else if (currentShopCategory === 'decorations') {
+                if (!petSystem.equippedDecorations.includes(item.id)) {
+                    petSystem.equippedDecorations.push(item.id);
+                }
+            }
+            
+            petSystem.updateDisplay();
+            petSystem.drawPet();
+            petSystem.save();
+            showShopCategory(currentShopCategory);
+            petSystem.showNotification('🎉 Purchased & equipped ' + item.name + '!');
+        }
+        
+        function equipItem(itemId, category) {
+            if (category === 'costumes') {
+                petSystem.equippedCostume = itemId;
+                petSystem.showNotification('👕 Costume equipped!');
+            } else if (category === 'backgrounds') {
+                petSystem.equippedBackground = itemId;
+                petSystem.showNotification('🖼️ Background equipped!');
+            } else if (category === 'decorations') {
+                if (!petSystem.equippedDecorations.includes(itemId)) {
+                    petSystem.equippedDecorations.push(itemId);
+                    petSystem.showNotification('🛋️ Decoration placed!');
+                }
+            }
+            
+            petSystem.drawPet();
+            petSystem.save();
+            showShopCategory(currentShopCategory);
+        }
+        
+        function unequipItem(itemId, category) {
+            if (category === 'costumes') {
+                petSystem.equippedCostume = null;
+                petSystem.showNotification('👕 Costume removed!');
+            } else if (category === 'backgrounds') {
+                petSystem.equippedBackground = null;
+                petSystem.showNotification('🖼️ Background removed!');
+            } else if (category === 'decorations') {
+                const index = petSystem.equippedDecorations.indexOf(itemId);
+                if (index > -1) {
+                    petSystem.equippedDecorations.splice(index, 1);
+                    petSystem.showNotification('🛋️ Decoration removed!');
+                }
+            }
+            
+            petSystem.drawPet();
+            petSystem.save();
+            showShopCategory(currentShopCategory);
+        }
+        
+        // Pet Collection System
+        const petCollection = {
+            allPets: [
+                { id: 'cat', name: '🐱 Cat', unlock: 0, emoji: '🐱', stage: 'Starter' },
+                { id: 'dog', name: '🐶 Dog', unlock: 0, emoji: '🐶', stage: 'Starter' },
+                { id: 'bunny', name: '🐰 Bunny', unlock: 0, emoji: '🐰', stage: 'Starter' },
+                { id: 'fish', name: '🐟 Fish', unlock: 100, emoji: '🐟', stage: 'Teen' },
+                { id: 'bird', name: '🐦 Bird', unlock: 100, emoji: '🐦', stage: 'Teen' },
+                { id: 'coffee', name: '☕ Coffee Bean', unlock: 100, emoji: '☕', stage: 'Teen' },
+                { id: 'fox', name: '🦊 Fox', unlock: 300, emoji: '🦊', stage: 'Adult' },
+                { id: 'bear', name: '🐻 Bear', unlock: 300, emoji: '🐻', stage: 'Adult' },
+                { id: 'billiard', name: '🎱 Billiard Ball', unlock: 300, emoji: '🎱', stage: 'Adult' },
+                { id: 'dragon', name: '🐲 Dragon', unlock: 800, emoji: '🐲', stage: 'Elder' },
+                { id: 'unicorn', name: '🦄 Unicorn', unlock: 800, emoji: '🦄', stage: 'Elder' },
+                { id: 'beer', name: '🍺 Beer Buddy', unlock: 800, emoji: '🍺', stage: 'Elder' }
+            ],
+            
+            getOwnedPets() {
+                const owned = localStorage.getItem('ownedPets');
+                return owned ? JSON.parse(owned) : [petSystem.currentPet];
+            },
+            
+            addPet(petId) {
+                const owned = this.getOwnedPets();
+                if (!owned.includes(petId)) {
+                    owned.push(petId);
+                    localStorage.setItem('ownedPets', JSON.stringify(owned));
+                }
+            },
+            
+            switchPet(newPetId) {
+                // Save current pet state
+                petSystem.save();
+                
+                // Load new pet
+                petSystem.currentPet = newPetId;
+                const petData = this.allPets.find(p => p.id === newPetId);
+                
+                // Update display
+                document.getElementById('petName').textContent = petData.emoji + ' ' + petData.name.split(' ').slice(1).join(' ');
+                document.getElementById('petNameInput').value = petData.name.split(' ').slice(1).join(' ');
+                
+                petSystem.drawPet();
+                petSystem.save();
+                
+                hideCollection();
+                petSystem.showNotification('Switched to ' + petData.name + '! 🎉');
+            }
+        };
+        
+        function showCollection() {
+            document.getElementById('petDisplay').style.display = 'none';
+            document.getElementById('petShop').style.display = 'none';
+            document.getElementById('petCollection').style.display = 'block';
+            renderCollection();
+        }
+        
+        function hideCollection() {
+            document.getElementById('petCollection').style.display = 'none';
+            document.getElementById('petDisplay').style.display = 'block';
+            document.getElementById('petShop').style.display = 'block';
+        }
+        
+        function renderCollection() {
+            const grid = document.getElementById('collectionGrid');
+            grid.innerHTML = '';
+            
+            const ownedPets = petCollection.getOwnedPets();
+            const currentPoints = petSystem.taskPoints;
+            
+            petCollection.allPets.forEach(pet => {
+                const isOwned = ownedPets.includes(pet.id);
+                const isActive = pet.id === petSystem.currentPet;
+                const isUnlocked = currentPoints >= pet.unlock;
+                const canUnlock = isUnlocked && !isOwned;
+                
+                const item = document.createElement('div');
+                item.className = 'collection-item';
+                if (isActive) item.classList.add('active');
+                if (!isOwned && !canUnlock) item.classList.add('locked');
+                
+                // Create mini canvas for pet sprite
+                const canvas = document.createElement('canvas');
+                canvas.className = 'collection-pet-sprite';
+                canvas.width = 80;
+                canvas.height = 80;
+                
+                // ALWAYS draw the actual pet (no silhouettes!)
+                const ctx = canvas.getContext('2d');
+                ctx.imageSmoothingEnabled = false;
+                
+                // Scale down from 128x128 to 80x80
+                ctx.scale(0.625, 0.625);  // 80/128 = 0.625
+                
+                // Draw based on pet type
+                if (pet.id === 'cat') petSystem.drawCat(ctx);
+                else if (pet.id === 'dog') petSystem.drawDog(ctx);
+                else if (pet.id === 'bunny') petSystem.drawBunny(ctx);
+                else if (pet.id === 'fish') petSystem.drawFish(ctx);
+                else if (pet.id === 'bird') petSystem.drawBird(ctx);
+                else if (pet.id === 'coffee') petSystem.drawCoffee(ctx);
+                else if (pet.id === 'fox') petSystem.drawFox(ctx);
+                else if (pet.id === 'bear') petSystem.drawBear(ctx);
+                else if (pet.id === 'billiard') petSystem.drawBilliard(ctx);
+                else if (pet.id === 'dragon') petSystem.drawDragon(ctx);
+                else if (pet.id === 'unicorn') petSystem.drawUnicorn(ctx);
+                else if (pet.id === 'beer') petSystem.drawBeer(ctx);
+                else {
+                    // For not-yet-drawn pets, show emoji
+                    ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset scale for emoji
+                    ctx.font = '48px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(pet.emoji, 40, 40);
+                }
+                
+                const name = document.createElement('div');
+                name.className = 'collection-pet-name';
+                name.textContent = pet.name; // Always show the name!
+                
+                const status = document.createElement('div');
+                status.className = 'collection-pet-status';
+                
+                if (isActive) {
+                    status.textContent = '⭐ ACTIVE';
+                    status.classList.add('active-pet');
+                } else if (isOwned) {
+                    status.textContent = '✅ Owned - Tap to switch';
+                    status.classList.add('unlocked');
+                } else if (canUnlock) {
+                    status.textContent = '🎉 Tap to unlock!';
+                    status.classList.add('unlocked');
+                } else {
+                    status.textContent = `🔒 ${pet.unlock - currentPoints} more points`;
+                }
+                
+                item.appendChild(canvas);
+                item.appendChild(name);
+                item.appendChild(status);
+                
+                // Click handler
+                if (canUnlock && !isOwned) {
+                    item.onclick = () => {
+                        petCollection.addPet(pet.id);
+                        petCollection.switchPet(pet.id);
+                    };
+                } else if (isOwned && !isActive) {
+                    item.onclick = () => petCollection.switchPet(pet.id);
+                }
+                
+                grid.appendChild(item);
+            });
+        }
+        
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            petSystem.load();
+            if (petSystem.currentPet) {
+                showShopCategory('decorations');
+                // Add current pet to owned pets if not already there
+                petCollection.addPet(petSystem.currentPet);
+            }
+        });
+        
+        // Snake Game
+        let snakeGame = {
+            canvas: null,
+            ctx: null,
+            snake: [],
+            food: {},
+            direction: 'RIGHT',
+            nextDirection: 'RIGHT',
+            score: 0,
+            highScore: 0,
+            gridSize: 20,
+            tileCount: 20,
+            gameLoop: null,
+            isRunning: false,
+            isPaused: false,
+            
+            init() {
+                this.canvas = document.getElementById('snakeCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.highScore = parseInt(localStorage.getItem('snakeHighScore')) || 0;
+                document.getElementById('snakeHighScore').textContent = this.highScore;
+                
+                // Keyboard controls
+                document.addEventListener('keydown', (e) => {
+                    if (!this.isRunning || this.isPaused) return;
+                    
+                    switch(e.key) {
+                        case 'ArrowUp':
+                        case 'w':
+                        case 'W':
+                            if (this.direction !== 'DOWN') this.nextDirection = 'UP';
+                            e.preventDefault();
+                            break;
+                        case 'ArrowDown':
+                        case 's':
+                        case 'S':
+                            if (this.direction !== 'UP') this.nextDirection = 'DOWN';
+                            e.preventDefault();
+                            break;
+                        case 'ArrowLeft':
+                        case 'a':
+                        case 'A':
+                            if (this.direction !== 'RIGHT') this.nextDirection = 'LEFT';
+                            e.preventDefault();
+                            break;
+                        case 'ArrowRight':
+                        case 'd':
+                        case 'D':
+                            if (this.direction !== 'LEFT') this.nextDirection = 'RIGHT';
+                            e.preventDefault();
+                            break;
+                    }
+                });
+                
+                // Touch/Swipe controls for mobile
+                let touchStartX = 0;
+                let touchStartY = 0;
+                let touchEndX = 0;
+                let touchEndY = 0;
+                
+                this.canvas.addEventListener('touchstart', (e) => {
+                    touchStartX = e.changedTouches[0].screenX;
+                    touchStartY = e.changedTouches[0].screenY;
+                    e.preventDefault();
+                }, { passive: false });
+                
+                this.canvas.addEventListener('touchend', (e) => {
+                    if (!this.isRunning || this.isPaused) return;
+                    
+                    touchEndX = e.changedTouches[0].screenX;
+                    touchEndY = e.changedTouches[0].screenY;
+                    
+                    const diffX = touchEndX - touchStartX;
+                    const diffY = touchEndY - touchStartY;
+                    
+                    // Determine swipe direction (must be significant swipe)
+                    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 30) {
+                        // Horizontal swipe
+                        if (diffX > 0 && this.direction !== 'LEFT') {
+                            this.nextDirection = 'RIGHT';
+                        } else if (diffX < 0 && this.direction !== 'RIGHT') {
+                            this.nextDirection = 'LEFT';
+                        }
+                    } else if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > 30) {
+                        // Vertical swipe
+                        if (diffY > 0 && this.direction !== 'UP') {
+                            this.nextDirection = 'DOWN';
+                        } else if (diffY < 0 && this.direction !== 'DOWN') {
+                            this.nextDirection = 'UP';
+                        }
+                    }
+                    
+                    e.preventDefault();
+                }, { passive: false });
+            },
+            
+            start() {
+                this.snake = [
+                    {x: 10, y: 10},
+                    {x: 9, y: 10},
+                    {x: 8, y: 10}
+                ];
+                this.direction = 'RIGHT';
+                this.nextDirection = 'RIGHT';
+                this.score = 0;
+                this.isRunning = true;
+                this.isPaused = false;
+                document.getElementById('snakeScore').textContent = '0';
+                document.getElementById('snakeGameOver').style.display = 'none';
+                document.getElementById('snakeStartBtn').textContent = '🔄 Restart';
+                
+                this.spawnFood();
+                
+                if (this.gameLoop) clearInterval(this.gameLoop);
+                this.gameLoop = setInterval(() => this.update(), 100);
+            },
+            
+            update() {
+                if (!this.isRunning || this.isPaused) return;
+                
+                this.direction = this.nextDirection;
+                
+                // Move snake
+                const head = {...this.snake[0]};
+                
+                switch(this.direction) {
+                    case 'UP': head.y--; break;
+                    case 'DOWN': head.y++; break;
+                    case 'LEFT': head.x--; break;
+                    case 'RIGHT': head.x++; break;
+                }
+                
+                // Wall wrapping - snake goes through walls to other side
+                if (head.x < 0) head.x = this.tileCount - 1;
+                if (head.x >= this.tileCount) head.x = 0;
+                if (head.y < 0) head.y = this.tileCount - 1;
+                if (head.y >= this.tileCount) head.y = 0;
+                
+                // Check self collision
+                for (let segment of this.snake) {
+                    if (head.x === segment.x && head.y === segment.y) {
+                        this.gameOver();
+                        return;
+                    }
+                }
+                
+                this.snake.unshift(head);
+                
+                // Check food collision
+                if (head.x === this.food.x && head.y === this.food.y) {
+                    this.score++;
+                    document.getElementById('snakeScore').textContent = this.score;
+                    this.spawnFood();
+                } else {
+                    this.snake.pop();
+                }
+                
+                this.draw();
+            },
+            
+            draw() {
+                // Clear canvas
+                this.ctx.fillStyle = '#0a0a0a';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Draw grid
+                this.ctx.strokeStyle = '#1a1a1a';
+                this.ctx.lineWidth = 1;
+                for (let i = 0; i <= this.tileCount; i++) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(i * this.gridSize, 0);
+                    this.ctx.lineTo(i * this.gridSize, this.canvas.height);
+                    this.ctx.stroke();
+                    
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(0, i * this.gridSize);
+                    this.ctx.lineTo(this.canvas.width, i * this.gridSize);
+                    this.ctx.stroke();
+                }
+                
+                // Draw snake
+                this.snake.forEach((segment, index) => {
+                    if (index === 0) {
+                        // Head
+                        this.ctx.fillStyle = '#00ff88';
+                    } else {
+                        // Body - gradient effect
+                        const alpha = 1 - (index / this.snake.length) * 0.5;
+                        this.ctx.fillStyle = `rgba(0, 255, 136, ${alpha})`;
+                    }
+                    this.ctx.fillRect(
+                        segment.x * this.gridSize + 1,
+                        segment.y * this.gridSize + 1,
+                        this.gridSize - 2,
+                        this.gridSize - 2
+                    );
+                });
+                
+                // Draw food
+                this.ctx.fillStyle = '#ff3366';
+                this.ctx.beginPath();
+                this.ctx.arc(
+                    this.food.x * this.gridSize + this.gridSize / 2,
+                    this.food.y * this.gridSize + this.gridSize / 2,
+                    this.gridSize / 2 - 2,
+                    0,
+                    Math.PI * 2
+                );
+                this.ctx.fill();
+            },
+            
+            spawnFood() {
+                do {
+                    this.food = {
+                        x: Math.floor(Math.random() * this.tileCount),
+                        y: Math.floor(Math.random() * this.tileCount)
+                    };
+                } while (this.snake.some(segment => segment.x === this.food.x && segment.y === this.food.y));
+            },
+            
+            gameOver() {
+                this.isRunning = false;
+                clearInterval(this.gameLoop);
+                
+                document.getElementById('finalScore').textContent = this.score;
+                document.getElementById('snakeGameOver').style.display = 'block';
+                
+                if (this.score > this.highScore) {
+                    this.highScore = this.score;
+                    localStorage.setItem('snakeHighScore', this.highScore);
+                    document.getElementById('snakeHighScore').textContent = this.highScore;
+                }
+            },
+            
+            pause() {
+                this.isPaused = !this.isPaused;
+            }
+        };
+        
+        function startSnakeGame() {
+            if (!snakeGame.canvas) snakeGame.init();
+            snakeGame.start();
+        }
+        
+        function pauseSnakeGame() {
+            if (snakeGame.isRunning) {
+                snakeGame.pause();
+            }
+        }
+        
+        // Arrow button controls
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('arrowUp').addEventListener('click', function() {
+                if (snakeGame.isRunning && !snakeGame.isPaused && snakeGame.direction !== 'DOWN') {
+                    snakeGame.nextDirection = 'UP';
+                }
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => this.style.transform = 'scale(1)', 100);
+            });
+            
+            document.getElementById('arrowDown').addEventListener('click', function() {
+                if (snakeGame.isRunning && !snakeGame.isPaused && snakeGame.direction !== 'UP') {
+                    snakeGame.nextDirection = 'DOWN';
+                }
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => this.style.transform = 'scale(1)', 100);
+            });
+            
+            document.getElementById('arrowLeft').addEventListener('click', function() {
+                if (snakeGame.isRunning && !snakeGame.isPaused && snakeGame.direction !== 'RIGHT') {
+                    snakeGame.nextDirection = 'LEFT';
+                }
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => this.style.transform = 'scale(1)', 100);
+            });
+            
+            document.getElementById('arrowRight').addEventListener('click', function() {
+                if (snakeGame.isRunning && !snakeGame.isPaused && snakeGame.direction !== 'LEFT') {
+                    snakeGame.nextDirection = 'RIGHT';
+                }
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => this.style.transform = 'scale(1)', 100);
+            });
+        });
+    </script>
+</body>
+</html>
